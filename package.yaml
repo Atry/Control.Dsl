@@ -1,52 +1,41 @@
-name:                dsl
-version:             0.1.0.0
-github:              "githubuser/dsl"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2018 Author name here"
-
+name: dsl
+version: 0.1.0.0
+github: githubuser/dsl
+license: BSD3
+author: Author name here
+maintainer: example@example.com
+copyright: 2018 Author name here
 extra-source-files:
-- README.md
-- ChangeLog.md
-
-# Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
-
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/dsl#readme>
-
+  - README.md
+  - ChangeLog.md
+description: 'Please see the README on GitHub at <https://github.com/githubuser/dsl#readme>'
 dependencies:
-- base >= 4.7 && < 5
-
+  - base >= 4.7 && < 5
 library:
   source-dirs: src
   other-modules:
-  - Control.Dsl.Internal
-  - Control.Dsl.Internal.Maybe
-  - Control.Dsl.Internal.Monad
-
+    - Control.Dsl.Internal
+    - Control.Dsl.Internal.Maybe
+    - Control.Dsl.Internal.Monad
 executables:
   dsl-exe:
-    main:                Main.hs
-    source-dirs:         app
+    main: Main.hs
+    source-dirs: app
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - '-threaded'
+      - '-rtsopts'
+      - '-with-rtsopts=-N'
     dependencies:
-    - dsl
-
+      - dsl
 tests:
-  dsl-test:
-    main:                Spec.hs
-    source-dirs:         test
+  dsl-doctests:
+    main: doctest-driver.hs
+    source-dirs: test
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+      - '-threaded'
+      - '-rtsopts'
+      - '-with-rtsopts=-N'
     dependencies:
-    - dsl
+      - dsl
+      - doctest
+      - doctest-discover
