@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE ExistentialQuantification #-}
 
 module Control.Dsl.Return where
 
@@ -15,4 +16,5 @@ instance {-# OVERLAPPABLE #-} Dsl (Return a) b a where
 instance {-# INCOHERENT #-} (Applicative m, Dsl (Return a) d d) => Dsl (Return a) b (m d) where
   (>>=) (Return x) _ = pure $ Return x Control.Dsl.Internal.>>= id
 
+return :: forall d a. Dsl (Return a) d d => a -> d
 return x = Return x Control.Dsl.Internal.>>= id
