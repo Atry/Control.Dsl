@@ -1,14 +1,14 @@
 name: dsl
 version: 0.1.0.0
-github: githubuser/dsl
+github: Atry/dsl
 license: BSD3
-author: Author name here
-maintainer: example@example.com
-copyright: 2018 Author name here
+author: Yang Bo
+maintainer: pop.atry@gmail.com
+copyright: 2018 Yang Bo
 extra-source-files:
   - README.md
   - ChangeLog.md
-description: 'Please see the README on GitHub at <https://github.com/githubuser/dsl#readme>'
+description: 'Please see the README on GitHub at <https://github.com/Atry/dsl#readme>'
 dependencies:
   - base >= 4.7 && < 5
 library:
