@@ -17,16 +17,6 @@ library:
     - Control.Dsl.Internal
     - Control.Dsl.Internal.Maybe
     - Control.Dsl.Internal.Monad
-executables:
-  dsl-exe:
-    main: Main.hs
-    source-dirs: app
-    ghc-options:
-      - '-threaded'
-      - '-rtsopts'
-      - '-with-rtsopts=-N'
-    dependencies:
-      - dsl
 tests:
   dsl-doctests:
     main: doctest-driver.hs
