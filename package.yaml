@@ -27,5 +27,7 @@ tests:
       - '-with-rtsopts=-N'
     dependencies:
       - dsl
+      - containers
+      - temporary
       - doctest
       - doctest-discover
