@@ -10,4 +10,4 @@ data Yield a b where
   Yield :: a -> Yield a ()
 
 instance Dsl (Yield a) () [a] where
-  (>>=) (Yield x) handler = x : handler ()
+  Yield a >>= f = a : f ()

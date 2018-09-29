@@ -3,10 +3,12 @@
 
 module Control.Dsl.Internal where
 
+import Prelude ()
+
 class Dsl m a d where
   (>>=) :: m a -> (a -> d) -> d
   (>>) :: m a -> d -> d
-  (>>) ma d = ma Control.Dsl.Internal.>>= \a -> d
+  ma >> d = ma >>= \a -> d
 
 instance {-# OVERLAPPABLE #-} Dsl m a d => Dsl m a (b -> d) where
-  (>>=) k handler state = k Control.Dsl.Internal.>>= \x -> handler x state
+  (k >>= f) b = k >>= \a -> f a b

@@ -52,9 +52,9 @@ data Put a b where
   Put :: a -> Put a ()
 
 instance Dsl (Put a) () (a -> b) where
-  (>>=) (Put x) handler y = handler () x
+  Put a >>= f = const $ f () a
 
 data Get a = Get
 
 instance Dsl Get a (a -> b) where
-  (>>=) Get handler x = handler x x
+  (Get >>= f) a = f a a
