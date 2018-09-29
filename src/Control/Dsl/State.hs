@@ -1,5 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE CPP #-}
 
