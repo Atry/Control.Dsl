@@ -18,5 +18,5 @@ instance {-# OVERLAPPABLE #-} Dsl (Return a) b a where
 instance {-# INCOHERENT #-} (Applicative m, Dsl (Return a) d d) => Dsl (Return a) b (m d) where
   Return x >>= _ = pure $ Return x >>= id
 
-return :: forall d a. Dsl (Return a) d d => a -> d
+return :: Dsl (Return a) d d => a -> d
 return x = Return x >>= id
