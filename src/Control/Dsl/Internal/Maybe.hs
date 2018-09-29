@@ -12,7 +12,7 @@ import Control.Dsl.Return
 import Control.Dsl.Internal
 
 {- |
-This instance automatically lift a 'Maybe' to other domains,
+This instance automatically lifts a 'Maybe' to other domains,
 similar to @MaybeT@ but simpler.
 
 === Examples
@@ -68,7 +68,8 @@ Input the first number...
 Nothing
 
 Note that the same functionality implemented in @MaybeT@ monad transformers
-would be much complicated due to manually @lift@ calls.
+would be much complicated than the above example,
+due to manually @lift@ing 'Maybe' and 'IO' to a common type.
 -}
 instance Dsl (Return (Maybe a)) d d => Dsl Maybe a d where
   Nothing >>= f = return @(Maybe a) Nothing

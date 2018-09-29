@@ -7,7 +7,7 @@
 {- |
 Description : Mutable variables
 
-This @State@ module provides the ability to 'Put' and 'Get' the value of multiple mutable variables in a @do@ block.
+This module provides the ability to 'Put' and 'Get' the value of multiple mutable variables in a @do@ block.
 
 >>> :set -XTypeApplications
 >>> :set -XRebindableSyntax
