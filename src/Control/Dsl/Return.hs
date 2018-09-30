@@ -4,19 +4,20 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE RebindableSyntax #-}
+{-# LANGUAGE GADTs #-}
 
 module Control.Dsl.Return where
 
-import Prelude (Applicative, id, pure, ($))
+import Prelude (Applicative, pure, ($))
 import Control.Dsl.Internal.Dsl
+import Control.Dsl.Cont
+import Data.Void
 
-newtype Return a b = Return a
+data Return a b where
+  Return :: a -> Return a Void
 
-instance {-# OVERLAPPABLE #-} Dsl (Return a) b a where
+instance {-# OVERLAPPABLE #-} Dsl (Return a) Void a where
   Return a >>= _ = a
 
-instance {-# INCOHERENT #-} (Applicative m, Dsl (Return a) d d) => Dsl (Return a) b (m d) where
-  Return x >>= _ = pure $ Return x >>= id
-
-return :: Dsl (Return a) d d => a -> d
-return x = Return x >>= id
+return :: Dsl (Return a) Void d => a -> d
+return x = Return x >>= absurd

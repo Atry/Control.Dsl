@@ -4,13 +4,14 @@
 
 module Control.Dsl(
   module Control.Dsl.Internal.Dsl,
-  module Control.Dsl.Internal.Maybe,
-  module Control.Dsl.Internal.Monad,
   Control.Dsl.Return.return
 ) where
 
 import Control.Dsl.Return (return)
-import Control.Dsl.State
 import Control.Dsl.Internal.Dsl
-import Control.Dsl.Internal.Maybe
-import Control.Dsl.Internal.Monad
+
+-- Import modules that contains orphan instances
+import Control.Dsl.Cont ()
+import Control.Dsl.State ()
+import Control.Dsl.Internal.Maybe ()
+import Control.Dsl.Internal.Monad ()

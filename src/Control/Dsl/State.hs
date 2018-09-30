@@ -2,7 +2,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE CPP #-}
 
 {- |
 Description : Mutable variables
@@ -14,6 +13,7 @@ This module provides the ability to 'Put' and 'Get' the value of multiple mutabl
 >>> import Prelude hiding ((>>), (>>=), return)
 >>> import Control.Dsl
 >>> import Data.Sequence
+
 >>> :{
 formatter :: Double -> Integer -> Seq String -> String
 formatter = do
@@ -61,6 +61,3 @@ data Get a = Get
 
 instance Dsl Get a (State a b) where
   (Get >>= f) a = f a a
-
-instance {-# OVERLAPPABLE #-} Dsl m a d => Dsl m a (State b d) where
-  (k >>= f) b = k >>= \a -> f a b
