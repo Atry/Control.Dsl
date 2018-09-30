@@ -15,7 +15,7 @@ import Prelude hiding ((>>), (>>=), return)
 data Empty a where
   Empty :: Empty Void
 
-instance {-# OVERLAPPABLE #-} Monoid d => Dsl Empty Void d where
+instance {-# INCOHERENT #-} Monoid d => Dsl Empty Void d where
   (>>=) Empty _ = mempty
 
 instance {-# INCOHERENT #-} Alternative m => Dsl Empty Void (m b) where

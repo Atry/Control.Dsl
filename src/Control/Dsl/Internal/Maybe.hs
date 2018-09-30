@@ -72,6 +72,6 @@ Note that the same functionality implemented in @MaybeT@ monad transformers
 would be much complicated than the above example,
 due to manually @lift@ing 'Maybe' and 'IO' to a common type.
 -}
-instance Dsl (Return (Maybe a)) Void d => Dsl Maybe a d where
+instance {-# INCOHERENT #-} Dsl (Return (Maybe a)) Void d => Dsl Maybe a d where
   Nothing >>= f = return @(Maybe a) Nothing
   Just a >>= f = f a

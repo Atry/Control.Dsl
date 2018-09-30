@@ -14,7 +14,7 @@ class Dsl m a d where
   (>>) :: m a -> d -> d
   ma >> d = ma >>= \a -> d
 
-instance {-# OVERLAPPABLE #-} Dsl m a d => Dsl m a (b -> d) where
+instance {-# INCOHERENT #-} Dsl m a d => Dsl m a (b -> d) where
   (k >>= f) b = k >>= \a -> f a b
 
 instance {-# INCOHERENT #-} (Applicative m, Dsl n Void d) => Dsl n Void (m d) where

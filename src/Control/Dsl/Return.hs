@@ -16,7 +16,7 @@ import Data.Void
 data Return a b where
   Return :: a -> Return a Void
 
-instance {-# OVERLAPPABLE #-} Dsl (Return a) Void a where
+instance Dsl (Return a) Void a where
   Return a >>= _ = a
 
 return :: Dsl (Return a) Void d => a -> d
