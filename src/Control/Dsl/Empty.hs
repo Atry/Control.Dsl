@@ -6,7 +6,7 @@
 
 module Control.Dsl.Empty where
 
-import Control.Dsl.Internal
+import Control.Dsl.Internal.Dsl
 import Control.Applicative
 import Prelude (Monoid, mempty)
 

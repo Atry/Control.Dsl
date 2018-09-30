@@ -38,7 +38,7 @@ randomGenerator seed =
 -}
 module Control.Dsl.Yield where
 
-import Control.Dsl.Internal
+import Control.Dsl.Internal.Dsl
 
 data Yield a b where
   Yield :: a -> Yield a ()

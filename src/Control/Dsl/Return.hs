@@ -8,7 +8,7 @@
 module Control.Dsl.Return where
 
 import Prelude (Applicative, id, pure, ($))
-import Control.Dsl.Internal
+import Control.Dsl.Internal.Dsl
 
 newtype Return a b = Return a
 

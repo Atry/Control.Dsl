@@ -47,15 +47,20 @@ formatter = do
 module Control.Dsl.State where
 
 import Prelude hiding ((>>), (>>=), return)
-import Control.Dsl.Internal
+import Control.Dsl.Internal.Dsl
+
+type State a b = a -> b
 
 data Put a b where
   Put :: a -> Put a ()
 
-instance Dsl (Put a) () (a -> b) where
+instance Dsl (Put a) () (State a b) where
   Put a >>= f = const $ f () a
 
 data Get a = Get
 
-instance Dsl Get a (a -> b) where
+instance Dsl Get a (State a b) where
   (Get >>= f) a = f a a
+
+instance {-# OVERLAPPABLE #-} Dsl m a d => Dsl m a (State b d) where
+  (k >>= f) b = k >>= \a -> f a b

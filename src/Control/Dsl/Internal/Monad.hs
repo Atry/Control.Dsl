@@ -4,7 +4,7 @@
 
 module Control.Dsl.Internal.Monad where
 
-import Control.Dsl.Internal
+import Control.Dsl.Internal.Dsl
 import qualified Prelude
 
 instance Prelude.Monad m => Dsl m a (m b) where

@@ -9,7 +9,7 @@ module Control.Dsl.Internal.Maybe where
 
 import Prelude hiding ((>>), (>>=), return)
 import Control.Dsl.Return
-import Control.Dsl.Internal
+import Control.Dsl.Internal.Dsl
 
 {- |
 This instance automatically lifts a 'Maybe' to other domains,
