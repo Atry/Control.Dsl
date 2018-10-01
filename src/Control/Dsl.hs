@@ -11,6 +11,7 @@
 >>> :set -XFlexibleContexts
 >>> :set -XRebindableSyntax
 >>> :set -XTypeApplications
+>>> import qualified Prelude
 >>> import Prelude hiding ((>>), (>>=), return)
 >>> import Control.Dsl
 >>> import Control.Dsl.State
@@ -36,7 +37,6 @@ f :: (Dsl (Yield [Char]) r (), Dsl (Return [Char]) r Void,
 >>> f True :: [String]
 ["foo","bar","baz"]
 
->>> import qualified Prelude
 >>> :{
 instance Dsl (Yield String) (IO ()) () where
   cpsApply (Yield a) = (Prelude.>>=) (putStrLn $ "Yield " ++ a)
