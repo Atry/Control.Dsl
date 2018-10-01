@@ -37,6 +37,9 @@ f :: (Dsl (Yield [Char]) r (), Dsl (Return [Char]) r Void,
 >>> f True :: [String]
 ["foo","bar","baz"]
 
+>>> f False :: [String]
+["foo","baz"]
+
 >>> :{
 instance Dsl (Yield String) (IO ()) () where
   cpsApply (Yield a) = (Prelude.>>=) (putStrLn $ "Yield " ++ a)
