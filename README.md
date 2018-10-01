@@ -11,4 +11,4 @@ The state of art solution is [using only one monad](http://okmij.org/ftp/Haskell
 
 However, the `Eff` approach is heavy weight than ordinary monad. It's not very convenient to create an additional indirect layer for simple use cases.
 
-The  `Eff ` approach of bypassing  `>>= ` combinator is quite embarrassing. Since  `>>= ` settles on our logo, In this proposal we present a new approach to enable multiple operations at once by improving  `>>= `. This proposal aims to port the approach used in [Dsl.scala](https://github.com/ThoughtWorksInc/Dsl.scala) to Haskell. This approach improves the extensibility of `>>=`.
+The  `Eff` approach of bypassing  `>>=` combinator is quite embarrassing. Since  `>>=` settles on our logo, In this proposal we present a new approach to enable multiple operations at once by improving  `>>=`. This proposal aims to port the approach used in [Dsl.scala](https://github.com/ThoughtWorksInc/Dsl.scala) to Haskell. This approach improves the extensibility of `>>=`.
