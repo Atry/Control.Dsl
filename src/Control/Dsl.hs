@@ -10,35 +10,52 @@
 >>> :set -XFlexibleInstances
 >>> :set -XFlexibleContexts
 >>> :set -XRebindableSyntax
+>>> :set -XTypeApplications
 >>> import Prelude hiding ((>>), (>>=), return)
 >>> import Control.Dsl
+>>> import Control.Dsl.State
 >>> import Control.Dsl.Yield
+>>> import Control.Dsl.Return
+>>> import Data.Void
 
 >>> :{
 f = do
   Yield "foo"
-  Yield "bar"
+  config <- Get @Bool
+  when config $ do
+    Yield "bar"
+    return ()
   return "baz"
 :}
 
 >>> :type f
-f :: (Dsl (Yield [Char]) r (),
-      Dsl (Control.Dsl.Return.Return [Char]) r Data.Void.Void) =>
+f :: (Dsl (Yield [Char]) r (), Dsl (Return [Char]) r Void,
+      Dsl Get r Bool) =>
      r
 
->>> f :: [String]
+>>> f True :: [String]
 ["foo","bar","baz"]
 
 >>> import qualified Prelude
 >>> :{
-instance Dsl (Yield String) (IO a) () where
+instance Dsl (Yield String) (IO ()) () where
   cpsApply (Yield a) = (Prelude.>>=) (putStrLn $ "Yield " ++ a)
 :}
 
->>> f :: IO String
+>>> :{
+instance Dsl Get (IO ()) Bool where
+  cpsApply Get f = (putStrLn "Get") Prelude.>> f False
+:}
+
+>>> :{
+instance Dsl (Return String) (IO ()) Void where
+  cpsApply (Return a) _ = putStrLn $ "Return " ++ a
+:}
+
+>>> f :: IO ()
 Yield foo
-Yield bar
-"baz"
+Get
+Return baz
 -}
 module Control.Dsl(
   module Control.Dsl.Dsl,
