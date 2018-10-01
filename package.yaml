@@ -16,9 +16,7 @@ dependencies:
 library:
   source-dirs: src
   other-modules:
-    - Control.Dsl.Internal.Dsl
-    - Control.Dsl.Internal.Maybe
-    - Control.Dsl.Internal.Monad
+    - Control.Dsl.Dsl
 tests:
   dsl-doctests:
     main: doctest-driver.hs

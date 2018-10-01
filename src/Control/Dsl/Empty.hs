@@ -7,19 +7,19 @@
 
 module Control.Dsl.Empty where
 
-import Control.Dsl.Internal.Dsl
+import Control.Dsl.Dsl
 import Data.Void
 import Control.Applicative
 import Prelude hiding ((>>), (>>=), return)
 
-data Empty a where
-  Empty :: Empty Void
+data Empty r a where
+  Empty :: Empty r Void
 
-instance {-# INCOHERENT #-} Monoid d => Dsl Empty Void d where
+instance {-# OVERLAPPABLE #-} Monoid r => Dsl Empty r Void where
   cpsApply Empty _ = mempty
 
-instance {-# INCOHERENT #-} Alternative m => Dsl Empty Void (m b) where
+instance {-# OVERLAPPABLE #-} Alternative m => Dsl Empty (m b) Void where
   cpsApply Empty _ = Control.Applicative.empty
-
-empty :: Dsl Empty Void a => a
+      
+empty :: Dsl Empty r Void => r
 empty = cpsApply Empty absurd

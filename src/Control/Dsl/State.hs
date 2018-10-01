@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE RankNTypes #-}
 
 {- |
 Description : Mutable variables
@@ -14,6 +15,7 @@ This module provides the ability to 'Put' and 'Get' the value of multiple mutabl
 >>> import Control.Dsl
 >>> import Data.Sequence
 
+>>> :set -fprint-potential-instances
 >>> :{
 formatter :: Double -> Integer -> Seq String -> String
 formatter = do
@@ -47,17 +49,18 @@ formatter = do
 module Control.Dsl.State where
 
 import Prelude hiding ((>>), (>>=), return)
-import Control.Dsl.Internal.Dsl
+import Control.Dsl.Dsl
 
 type State a b = a -> b
 
-data Put a b where
-  Put :: a -> Put a ()
+data Put a r u where
+  Put :: a -> Put a r ()
 
-instance Dsl (Put a) () (State a b) where
+instance Dsl (Put a) (State a b) () where
   cpsApply (Put a) f _ = f () a
 
-data Get a = Get
+data Get r a where
+  Get :: forall a r. Get r a
 
-instance Dsl Get a (State a b) where
+instance Dsl Get (State a b) a where
   cpsApply Get f a = f a a

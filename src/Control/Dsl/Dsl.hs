@@ -1,0 +1,22 @@
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE RebindableSyntax #-}
+{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE TypeOperators #-}
+
+module Control.Dsl.Dsl where
+
+import Control.Dsl.Cont
+import Control.Applicative
+import Data.Void
+import Prelude hiding ((>>), (>>=), return)
+
+{- | This type class witnesses a use case of @k@,
+which is an ad-hoc delimited continuation adaptive to different @r@.
+-}
+class Dsl k r a where
+  cpsApply :: k r0 a -> r !! a
+
+instance {-# OVERLAPPABLE #-} Dsl k r a => Dsl k (b -> r) a where
+  cpsApply k f b = cpsApply k $ \a -> f a b

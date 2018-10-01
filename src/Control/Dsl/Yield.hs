@@ -38,10 +38,10 @@ randomGenerator seed =
 -}
 module Control.Dsl.Yield where
 
-import Control.Dsl.Internal.Dsl
+import Control.Dsl.Dsl
 
-data Yield a b where
-  Yield :: a -> Yield a ()
+data Yield a r b where
+  Yield :: a -> Yield a r ()
 
-instance Dsl (Yield a) () [a] where
+instance Dsl (Yield a) [a] () where
   cpsApply (Yield a) f = a : f ()

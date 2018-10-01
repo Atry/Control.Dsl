@@ -4,20 +4,25 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE RebindableSyntax #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE GADTs #-}
 
 module Control.Dsl.Return where
 
 import Prelude (Applicative, pure, ($))
-import Control.Dsl.Internal.Dsl
+import Control.Dsl.Dsl
 import Control.Dsl.Cont
 import Data.Void
 
-data Return a b where
-  Return :: a -> Return a Void
+data Return r0 r b where
+  Return :: r0 -> Return r0 r Void
 
-instance Dsl (Return a) Void a where
-  cpsApply (Return a) _ = a
+instance Dsl (Return r) r Void where
+  cpsApply (Return r) _ = r
 
-return :: Dsl (Return a) Void d => a -> d
-return x = cpsApply (Return x) absurd
+return r = cpsApply (Return r) absurd
+
+instance Dsl (Return a) (r !! a) Void where
+  cpsApply (Return r) _ f = f r
