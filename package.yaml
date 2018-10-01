@@ -18,7 +18,7 @@ library:
   other-modules:
     - Control.Dsl.Dsl
 tests:
-  dsl-doctests:
+  doctests:
     main: doctest-driver.hs
     source-dirs: test
     ghc-options:
