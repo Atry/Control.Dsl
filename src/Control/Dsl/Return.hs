@@ -17,7 +17,7 @@ data Return a b where
   Return :: a -> Return a Void
 
 instance Dsl (Return a) Void a where
-  Return a >>= _ = a
+  cpsApply (Return a) _ = a
 
 return :: Dsl (Return a) Void d => a -> d
-return x = Return x >>= absurd
+return x = cpsApply (Return x) absurd

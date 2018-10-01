@@ -55,9 +55,9 @@ data Put a b where
   Put :: a -> Put a ()
 
 instance Dsl (Put a) () (State a b) where
-  Put a >>= f = const $ f () a
+  cpsApply (Put a) f _ = f () a
 
 data Get a = Get
 
 instance Dsl Get a (State a b) where
-  (Get >>= f) a = f a a
+  cpsApply Get f a = f a a

@@ -49,11 +49,11 @@ earlyGeneratorTest = do
 newtype Shift r a = Shift (Cont r a)
 
 instance Dsl (Shift r) a r where
-  Shift k >>= f = k f
+  cpsApply (Shift k) f = k f
 
 instance Dsl m a d => Dsl m a (Shift d b) where
-  k >>= f = Shift $ \g -> k >>= \a -> f a >>= g
+  cpsApply k f = Shift $ \g -> cpsApply k $ \a -> cpsApply (f a) g
 
 instance {-# INCOHERENT #-} (Dsl m Void d) => Dsl m Void (c !! d) where
-  (k >>= _) f = f $ k >>= absurd
+  cpsApply k _ f = f $ cpsApply k absurd
 

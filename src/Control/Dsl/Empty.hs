@@ -16,10 +16,10 @@ data Empty a where
   Empty :: Empty Void
 
 instance {-# INCOHERENT #-} Monoid d => Dsl Empty Void d where
-  (>>=) Empty _ = mempty
+  cpsApply Empty _ = mempty
 
 instance {-# INCOHERENT #-} Alternative m => Dsl Empty Void (m b) where
-  (>>=) Empty _ = Control.Applicative.empty
+  cpsApply Empty _ = Control.Applicative.empty
 
 empty :: Dsl Empty Void a => a
-empty = Empty >>= absurd
+empty = cpsApply Empty absurd

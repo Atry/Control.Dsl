@@ -8,4 +8,4 @@ import Control.Dsl.Internal.Dsl
 import qualified Prelude
 
 instance {-# INCOHERENT #-} Prelude.Monad m => Dsl m a (m b) where
-  (>>=) = (Prelude.>>=)
+  cpsApply = (Prelude.>>=)

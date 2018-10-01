@@ -44,4 +44,4 @@ data Yield a b where
   Yield :: a -> Yield a ()
 
 instance Dsl (Yield a) () [a] where
-  Yield a >>= f = a : f ()
+  cpsApply (Yield a) f = a : f ()

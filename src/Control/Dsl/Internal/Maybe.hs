@@ -73,5 +73,5 @@ would be much complicated than the above example,
 due to manually @lift@ing 'Maybe' and 'IO' to a common type.
 -}
 instance {-# INCOHERENT #-} Dsl (Return (Maybe a)) Void d => Dsl Maybe a d where
-  Nothing >>= f = return @(Maybe a) Nothing
-  Just a >>= f = f a
+  cpsApply Nothing f = return @(Maybe a) Nothing
+  cpsApply (Just a) f = f a
