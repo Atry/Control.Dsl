@@ -26,7 +26,7 @@ tests:
       - '-rtsopts'
       - '-with-rtsopts=-N'
     dependencies:
-      - dsl
+      - do-notation-dsl
       - containers
       - temporary
       - doctest
