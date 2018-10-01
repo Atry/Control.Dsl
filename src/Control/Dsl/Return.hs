@@ -11,9 +11,10 @@
 
 module Control.Dsl.Return where
 
-import Prelude (Applicative, pure, ($))
+import Prelude hiding ((>>), (>>=), return)
 import Control.Dsl.Dsl
 import Control.Dsl.Cont
+import Control.Exception
 import Data.Void
 
 data Return r0 r b where
@@ -25,4 +26,13 @@ instance Dsl (Return r) r Void where
 return r = cpsApply (Return r) absurd
 
 instance Dsl (Return a) (r !! a) Void where
-  cpsApply (Return r) _ f = f r
+  cpsApply (Return a) _ f = f a
+
+instance Dsl (Return r) [r] Void where
+  cpsApply (Return r) _ = [r]
+
+instance Dsl (Return r) (Maybe r) Void where
+  cpsApply (Return r) _ = Just r
+
+instance Dsl (Return r) (IO r) Void where
+  cpsApply (Return r) _ = evaluate r

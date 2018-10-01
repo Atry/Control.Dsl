@@ -15,11 +15,11 @@ import Prelude hiding ((>>), (>>=), return)
 data Empty r a where
   Empty :: Empty r Void
 
-instance {-# OVERLAPPABLE #-} Monoid r => Dsl Empty r Void where
-  cpsApply Empty _ = mempty
+instance Dsl Empty [r] Void where
+  cpsApply Empty _ = []
 
-instance {-# OVERLAPPABLE #-} Alternative m => Dsl Empty (m b) Void where
-  cpsApply Empty _ = Control.Applicative.empty
-      
+instance Dsl Empty (Maybe r) Void where
+  cpsApply Empty _ = Nothing
+
 empty :: Dsl Empty r Void => r
 empty = cpsApply Empty absurd
