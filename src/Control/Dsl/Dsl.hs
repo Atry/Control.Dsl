@@ -71,15 +71,16 @@ Get
 Return baz
 -}
 class Dsl k r a where
-  (>>=) :: k r a -> r !! a
-  (>>) :: k r a -> r -> r
-  k >> a = k >>= const a
+  cpsApply :: k r a -> r !! a
+
+(>>=) k = cpsApply k
+k >> a = cpsApply k $ const a
 
 -- | Keywords based on ad-hoc polymorphic delimited continuations.
 instance {-# OVERLAPPABLE #-} PolyCont k r a => Dsl k r a where
-  (>>=) = runPolyCont
+  cpsApply = runPolyCont
 
 -- | Keywords based on monomorphic delimited continuations.
 instance Dsl Cont r a where
-  (>>=) = runCont
+  cpsApply = runCont
 
