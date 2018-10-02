@@ -1,5 +1,5 @@
 name: do-notation-dsl
-version: 0.1.1.0
+version: 0.2.0.0
 github: Atry/do-notation-dsl
 license: BSD3
 category: Control, DSL, Effect, General, Language, Mutable State, IO, Polymorphism
