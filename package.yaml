@@ -1,6 +1,6 @@
 name: do-notation-dsl
 version: 0.1.0.1
-github: Atry/dsl
+github: Atry/do-notation-dsl
 license: BSD3
 category: Control, DSL, Effect, General, Language, Mutable State, IO, Polymorphism
 synopsis: An alternative to monads
@@ -10,7 +10,7 @@ copyright: 2018 Yang Bo
 extra-source-files:
   - README.md
   - ChangeLog.md
-description: 'Please see the README on GitHub at <https://github.com/Atry/dsl#readme>'
+description: 'Please see the README on GitHub at <https://github.com/Atry/do-notation-dsl#readme>'
 dependencies:
   - base >= 4.7 && < 5
 library:
