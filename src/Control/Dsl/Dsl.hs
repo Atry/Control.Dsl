@@ -73,7 +73,13 @@ Return baz
 class Dsl k r a where
   cpsApply :: k r a -> r !! a
 
+{- | The implementation of @<-@ statements in a @do@ block,
+which forwards to 'runCont' if @k@ is 'Cont',
+otherwise forwards to 'runPolyCont'.
+-}
 (>>=) k = cpsApply k
+
+-- | The implementation of statements with no value in a @do@ block.
 k >> a = cpsApply k $ const a
 
 -- | Keywords based on ad-hoc polymorphic delimited continuations.
