@@ -50,6 +50,3 @@ newtype Shift r0 r a = Shift (r0 !! a)
 
 instance Dsl (Shift r) r a where
   cpsApply (Shift k) f = k f
-
--- instance Dsl m a d => Dsl m a (Shift d b) where
---   cpsApply k f = Shift $ \g -> cpsApply k $ \a -> cpsApply (f a) g

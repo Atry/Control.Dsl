@@ -71,7 +71,3 @@ import Control.Dsl.Return (return)
 import Control.Dsl.Dsl (Dsl(..))
 import Control.Dsl.Cont (when)
 import Control.Dsl.Do ((>>=), (>>))
-
--- Import modules that contains orphan instances
-import Control.Dsl.Shift ()
--- import Control.Dsl.State ()
