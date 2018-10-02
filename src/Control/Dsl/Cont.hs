@@ -7,7 +7,7 @@ module Control.Dsl.Cont where
 
 import Prelude hiding ((>>), (>>=), return)
 
--- ! A CPS-function
+-- ! A CPS function 
 type r !! a = (a -> r) -> r
 
 -- ! A delimited continuation that can be used in a @do@ block.

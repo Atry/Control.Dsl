@@ -29,26 +29,43 @@ Instead, create 'PolyCont' for both your custom keywords and built-in keywords.
 >>> import qualified Prelude
 >>> import Prelude hiding ((>>), (>>=), return)
 >>> import Control.Dsl
->>> import Control.Dsl.State
+>>> import Control.Dsl.State.Get
 >>> import Control.Dsl.Yield
 >>> import Control.Dsl.Return
 >>> import Data.Void
-
 >>> :{
 f = do
   Yield "foo"
   config <- Get @Bool
   when config $ do
     Yield "bar"
-    ($ ())
+    return ()
   return "baz"
 :}
+
+@f@ is a script that contains keywords of 'Get', 'Yield' and 'return',
+and can be used as a function that accepts a boolean parameter,
+with the help of default implementation of those keywords.
 
 >>> f False :: [String]
 ["foo","baz"]
 
->>> (f :: State Bool [String]) True
+>>> f True :: [String]
 ["foo","bar","baz"]
+
+In fact, @f@ can be any type as long as the implementation of
+'Get', 'Yield' and 'return' is provided.
+
+>>> :type f
+f :: (PolyCont (Yield [Char]) r (),
+      PolyCont (Return [Char]) r Void, PolyCont Get r Bool) =>
+     r
+
+Those implementation are provided by 'PolyCont'.
+which is an ad-hoc polymorphic delimited continuation.
+
+For example, `f` can be interpreted as impure @IO ()@,
+providing the following instances:
 
 >>> :{
 instance PolyCont (Yield String) (IO ()) () where

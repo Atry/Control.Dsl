@@ -13,7 +13,7 @@ import Control.Dsl.Cont
 import Control.Dsl.PolyCont
 import Prelude hiding ((>>), (>>=), return)
 
--- | A keyword to extract the value a CPS-function.
+-- | A keyword to extract the value a CPS function .
 newtype Shift r0 r a = Shift (r0 !! a)
 
 instance PolyCont (Shift r) r a where
