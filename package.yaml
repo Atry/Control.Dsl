@@ -18,7 +18,15 @@ library:
   other-modules:
     - Control.Dsl.Dsl
   other-extensions:
-    - TypeApplications
+    - RebindableSyntax
+    - MultiParamTypeClasses
+    - TypeOperators
+    - FlexibleInstances
+    - FlexibleContexts
+    - UndecidableInstances
+    - RankNTypes
+    - GADTs
+    - ScopedTypeVariables
 tests:
   doctests:
     main: doctest-driver.hs

@@ -2,10 +2,8 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE UndecidableInstances #-}
-{-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE GADTs #-}
 
