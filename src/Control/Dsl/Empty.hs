@@ -1,9 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE FunctionalDependencies #-}
 
 module Control.Dsl.Empty where
 

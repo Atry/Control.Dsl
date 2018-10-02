@@ -1,10 +1,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE GADTs #-}
 
 module Control.Dsl.Return where
