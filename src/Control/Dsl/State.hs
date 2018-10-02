@@ -39,12 +39,6 @@ append s = do
   ($ ())
 :}
 
->>> :type append
-append
-  :: (PolyCont (Put (Seq String)) b (),
-      PolyCont Get b (Seq String)) =>
-     String -> (() -> b) -> b
-
 A @formatter@ @append@s 'String' to its internal buffer,
 and 'Control.Dsl.return' the concatenated buffer.
 
@@ -59,14 +53,6 @@ formatter = do
   buffer <- Get @(Seq String)
   return $ concat buffer
 :}
-
->>> :type formatter
-formatter
-  :: (PolyCont (Put (Seq String)) r (),
-      PolyCont (Control.Dsl.Return.Return [Char]) r Data.Void.Void,
-      PolyCont Get r (Seq String), PolyCont Get r Double,
-      PolyCont Get r Integer) =>
-     r
 
 >>> x = 0.5 :: Double
 >>> y = 42 :: Integer

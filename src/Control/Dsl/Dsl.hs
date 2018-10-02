@@ -44,11 +44,6 @@ f = do
   return "baz"
 :}
 
->>> :type f
-f :: (PolyCont (Yield [Char]) r (),
-      PolyCont (Return [Char]) r Void, PolyCont Get r Bool) =>
-     r
-
 >>> f True :: [String]
 ["foo","bar","baz"]
 
