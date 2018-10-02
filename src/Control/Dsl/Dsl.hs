@@ -1,23 +1,33 @@
-{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE RebindableSyntax #-}
-{-# LANGUAGE KindSignatures #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Control.Dsl.Dsl where
 
+import Control.Dsl.PolyCont
 import Control.Dsl.Cont
-import Control.Applicative
-import Data.Void
 import Prelude hiding ((>>), (>>=), return)
 
-{- | This type class witnesses a use case of the keyword @k@,
-which is an ad-hoc delimited continuation adaptive to the answer type @r@.
+{- An use case of a keyword in a @do@ block.
+
+A keyword is a delimited continuation,
+which can be either ad-hoc polymorphic or not.
+
+Don't create custom instances of 'Dsl' for keywords.
+Instead, create 'PolyCont' for both your custom keywords and built-in keywords. 
 -}
 class Dsl k r a where
-  -- | Run a keyword as a CPS-function.
-  cpsApply :: k r0 a -> r !! a
+  (>>=) :: k r a -> r !! a
+  (>>) :: k r a -> r -> r
+  k >> a = k >>= const a
 
-instance {-# OVERLAPPABLE #-} Dsl k r a => Dsl k (b -> r) a where
-  cpsApply k f b = cpsApply k $ \a -> f a b
+-- | Keywords based on ad-hoc polymorphic delimited continuation.
+instance {-# OVERLAPPABLE #-} PolyCont k r a => Dsl k r a where
+  (>>=) = runPolyCont
+
+-- | Keywords based on monomorphic delimited continuation.
+instance Dsl Cont r a where
+  (>>=) = runCont
+

@@ -13,7 +13,7 @@ similar to the @yield@ keyword in C#, Python, and ECMAScript.
 -}
 module Control.Dsl.Yield where
 
-import Control.Dsl.Dsl
+import Control.Dsl.PolyCont
 
 {- | This @Yield@ keyword produces an element in a list generator
 
@@ -45,5 +45,5 @@ randomGenerator seed =
 data Yield a r b where
   Yield :: a -> Yield a r ()
 
-instance Dsl (Yield a) [a] () where
-  cpsApply (Yield a) f = a : f ()
+instance PolyCont (Yield a) [a] () where
+  runPolyCont (Yield a) f = a : f ()

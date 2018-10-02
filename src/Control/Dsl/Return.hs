@@ -8,7 +8,7 @@
 module Control.Dsl.Return where
 
 import Prelude hiding ((>>), (>>=), return)
-import Control.Dsl.Dsl
+import Control.Dsl.PolyCont
 import Control.Dsl.Cont
 import Control.Exception
 import Data.Void
@@ -16,8 +16,8 @@ import Data.Void
 data Return r0 r b where
   Return :: r0 -> Return r0 r Void
 
-instance Dsl (Return r) r Void where
-  cpsApply (Return r) _ = r
+instance PolyCont (Return r) r Void where
+  runPolyCont (Return r) _ = r
 
 {- | Lift a value to the return type, similar to 'Control.Monad.return'.
 
@@ -60,16 +60,16 @@ earlyGeneratorTest = do
 >>> earlyGeneratorTest
 ["before earlyGenerator","inside earlyGenerator","early return","after earlyGenerator","the return value of earlyGenerator is 1"]
 -}
-return r = cpsApply (Return r) absurd
+return r = runPolyCont (Return r) absurd
 
-instance Dsl (Return a) (r !! a) Void where
-  cpsApply (Return a) _ f = f a
+instance PolyCont (Return a) (r !! a) Void where
+  runPolyCont (Return a) _ f = f a
 
-instance Dsl (Return r) [r] Void where
-  cpsApply (Return r) _ = [r]
+instance PolyCont (Return r) [r] Void where
+  runPolyCont (Return r) _ = [r]
 
-instance Dsl (Return r) (Maybe r) Void where
-  cpsApply (Return r) _ = Just r
+instance PolyCont (Return r) (Maybe r) Void where
+  runPolyCont (Return r) _ = Just r
 
-instance Dsl (Return r) (IO r) Void where
-  cpsApply (Return r) _ = evaluate r
+instance PolyCont (Return r) (IO r) Void where
+  runPolyCont (Return r) _ = evaluate r

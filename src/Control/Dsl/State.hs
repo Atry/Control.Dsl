@@ -12,7 +12,7 @@ This module provides keywords to 'Put' and 'Get' the value of multiple mutable v
 module Control.Dsl.State where
 
 import Prelude hiding ((>>), (>>=), return)
-import Control.Dsl.Dsl
+import Control.Dsl.PolyCont
 
 
 {- |
@@ -41,7 +41,8 @@ append s = do
 
 >>> :type append
 append
-  :: (Dsl (Put (Seq String)) b (), Dsl Get b (Seq String)) =>
+  :: (PolyCont (Put (Seq String)) b (),
+      PolyCont Get b (Seq String)) =>
      String -> (() -> b) -> b
 
 A @formatter@ @append@s 'String' to its internal buffer,
@@ -61,9 +62,10 @@ formatter = do
 
 >>> :type formatter
 formatter
-  :: (Dsl (Put (Seq String)) r (),
-      Dsl (Control.Dsl.Return.Return [Char]) r Data.Void.Void,
-      Dsl Get r (Seq String), Dsl Get r Double, Dsl Get r Integer) =>
+  :: (PolyCont (Put (Seq String)) r (),
+      PolyCont (Control.Dsl.Return.Return [Char]) r Data.Void.Void,
+      PolyCont Get r (Seq String), PolyCont Get r Double,
+      PolyCont Get r Integer) =>
      r
 
 >>> x = 0.5 :: Double
@@ -83,11 +85,11 @@ type State a b = a -> b
 data Put a r u where
   Put :: a -> Put a r ()
 
-instance Dsl (Put a) (State a b) () where
-  cpsApply (Put a) f _ = f () a
+instance PolyCont (Put a) (State a b) () where
+  runPolyCont (Put a) f _ = f () a
 
 data Get r a where
   Get :: forall a r. Get r a
 
-instance Dsl Get (State a b) a where
-  cpsApply Get f a = f a a
+instance PolyCont Get (State a b) a where
+  runPolyCont Get f a = f a a

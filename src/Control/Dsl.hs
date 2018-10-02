@@ -30,8 +30,8 @@ f = do
 :}
 
 >>> :type f
-f :: (Dsl (Yield [Char]) r (), Dsl (Return [Char]) r Void,
-      Dsl Get r Bool) =>
+f :: (PolyCont (Yield [Char]) r (),
+      PolyCont (Return [Char]) r Void, PolyCont Get r Bool) =>
      r
 
 >>> f True :: [String]
@@ -41,18 +41,18 @@ f :: (Dsl (Yield [Char]) r (), Dsl (Return [Char]) r Void,
 ["foo","baz"]
 
 >>> :{
-instance Dsl (Yield String) (IO ()) () where
-  cpsApply (Yield a) = (Prelude.>>=) (putStrLn $ "Yield " ++ a)
+instance PolyCont (Yield String) (IO ()) () where
+  runPolyCont (Yield a) = (Prelude.>>=) (putStrLn $ "Yield " ++ a)
 :}
 
 >>> :{
-instance Dsl Get (IO ()) Bool where
-  cpsApply Get f = (putStrLn "Get") Prelude.>> f False
+instance PolyCont Get (IO ()) Bool where
+  runPolyCont Get f = (putStrLn "Get") Prelude.>> f False
 :}
 
 >>> :{
-instance Dsl (Return String) (IO ()) Void where
-  cpsApply (Return a) _ = putStrLn $ "Return " ++ a
+instance PolyCont (Return String) (IO ()) Void where
+  runPolyCont (Return a) _ = putStrLn $ "Return " ++ a
 :}
 
 >>> f :: IO ()
@@ -61,16 +61,14 @@ Get
 Return baz
 -}
 module Control.Dsl(
-  module Control.Dsl.Dsl,
   module Control.Dsl.Return,
-  module Control.Dsl.Do,
+  module Control.Dsl.Dsl,
   module Control.Dsl.Empty,
   module Control.Dsl.Cont
 ) where
 
 import Control.Dsl.Return (return)
-import Control.Dsl.Dsl (Dsl(..))
 import Control.Dsl.Cont (when, unless)
-import Control.Dsl.Do ((>>=), (>>))
+import Control.Dsl.Dsl
 import Control.Dsl.Empty (guard)
 import Prelude hiding ((>>), (>>=), return)

@@ -4,10 +4,10 @@
 
 module Control.Dsl.Monadic where
 
-import Control.Dsl.Dsl
+import Control.Dsl.PolyCont
 import qualified Prelude
 
 newtype Monadic m r a = Monadic (m a)
 
-instance Prelude.Monad m => Dsl (Monadic m) (m b) a where
-  cpsApply (Monadic k) = (Prelude.>>=) k
+instance Prelude.Monad m => PolyCont (Monadic m) (m b) a where
+  runPolyCont (Monadic k) = (Prelude.>>=) k
