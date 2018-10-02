@@ -14,8 +14,8 @@ import Prelude hiding ((>>), (>>=), return)
 
 {- | A use case of an __ad-hoc polymorphic delimited continuation__.
 
-Note that 'PolyCont's are not __polymorphic delimited continuation__,
-as 'PolyCont's do not support answer type modification.
+Note that a 'PolyCont' is not a __polymorphic delimited continuation__,
+since a 'PolyCont' does not support answer type modification.
 -}
 class PolyCont k r a where
   -- | Run as a CPS function .
