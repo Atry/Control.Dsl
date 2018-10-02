@@ -44,11 +44,11 @@ f = do
   return "baz"
 :}
 
->>> f True :: [String]
-["foo","bar","baz"]
-
 >>> f False :: [String]
 ["foo","baz"]
+
+>>> (f :: State Bool [String]) True
+["foo","bar","baz"]
 
 >>> :{
 instance PolyCont (Yield String) (IO ()) () where
