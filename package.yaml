@@ -17,6 +17,8 @@ library:
   source-dirs: src
   other-modules:
     - Control.Dsl.Dsl
+  other-extensions:
+    - TypeApplications
 tests:
   doctests:
     main: doctest-driver.hs
@@ -31,3 +33,5 @@ tests:
       - temporary
       - doctest
       - doctest-discover
+    other-extensions:
+      - TypeApplications
