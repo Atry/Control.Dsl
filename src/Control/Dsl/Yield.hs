@@ -10,8 +10,14 @@ This module contains the 'Yield' data type and related 'Dsl' instances.
 
 The 'Yield' data type can be used to create generators,
 similar to the @yield@ keyword in C#, Python, and ECMAScript.
+-}
+module Control.Dsl.Yield where
 
-=== Examples
+import Control.Dsl.Dsl
+
+{- | This @Yield@ keyword produces an element in a list generator
+
+==== __Examples__
 
 @randomGenerator@ is an example to create
 an xorshift pseudo-random number generator
@@ -36,10 +42,6 @@ randomGenerator seed =
 >>> take 5 $ randomGenerator 2463534242
 [723471715,2497366906,2064144800,2008045182,3532304609]
 -}
-module Control.Dsl.Yield where
-
-import Control.Dsl.Dsl
-
 data Yield a r b where
   Yield :: a -> Yield a r ()
 

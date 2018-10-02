@@ -25,7 +25,7 @@ f = do
   config <- Get @Bool
   when config $ do
     Yield "bar"
-    return ()
+    ($ ())
   return "baz"
 :}
 
