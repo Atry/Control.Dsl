@@ -19,5 +19,5 @@ instance {-# OVERLAPPABLE #-} Dsl k r a => Do k r a where
   (>>=) = cpsApply
 
 instance Do Cont r a where
-  (>>=) (Cont k) = k
+  (>>=) = runCont
 

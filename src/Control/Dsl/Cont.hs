@@ -10,7 +10,8 @@ import Prelude hiding ((>>), (>>=), return)
 -- ! A CPS-function
 type r !! a = (a -> r) -> r
 
-newtype Cont r a = Cont (r !! a)
+-- ! A delimited continuation that can be used in a @do@ block.
+newtype Cont r a = Cont { runCont :: r !! a }
 
 when True k = Cont k
 when False _ = Cont $ \f -> f ()
