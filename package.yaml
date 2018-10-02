@@ -13,7 +13,6 @@ extra-source-files:
 description: 'Please see the README on GitHub at <https://github.com/Atry/do-notation-dsl#readme>'
 dependencies:
   - base >= 4.7 && < 5
-  - void
 library:
   source-dirs: src
   other-modules:
