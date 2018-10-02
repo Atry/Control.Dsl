@@ -13,3 +13,6 @@ newtype Cont r a = Cont (r !! a)
 
 when True k = Cont k
 when False _ = Cont $ \f -> f ()
+
+unless True _ = Cont $ \f -> f ()
+unless False k = Cont k

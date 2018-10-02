@@ -5,9 +5,10 @@
 
 module Control.Dsl.Empty where
 
+import Control.Dsl.Cont
 import Control.Dsl.Dsl
 import Data.Void
-import Control.Applicative
+import Control.Applicative hiding (empty)
 import Prelude hiding ((>>), (>>=), return)
 
 data Empty r a where
@@ -21,3 +22,6 @@ instance Dsl Empty (Maybe r) Void where
 
 empty :: Dsl Empty r Void => r
 empty = cpsApply Empty absurd
+
+guard True = Cont $ \f -> f ()
+guard False = Cont $ \f -> empty

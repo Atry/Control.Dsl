@@ -64,10 +64,13 @@ module Control.Dsl(
   module Control.Dsl.Dsl,
   module Control.Dsl.Return,
   module Control.Dsl.Do,
+  module Control.Dsl.Empty,
   module Control.Dsl.Cont
 ) where
 
 import Control.Dsl.Return (return)
 import Control.Dsl.Dsl (Dsl(..))
-import Control.Dsl.Cont (when)
+import Control.Dsl.Cont (when, unless)
 import Control.Dsl.Do ((>>=), (>>))
+import Control.Dsl.Empty (guard)
+import Prelude hiding ((>>), (>>=), return)
