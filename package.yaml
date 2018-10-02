@@ -17,6 +17,7 @@ library:
   source-dirs: src
   other-modules:
     - Control.Dsl.Dsl
+    - Control.Dsl.State.State
   other-extensions:
     - RebindableSyntax
     - MultiParamTypeClasses
