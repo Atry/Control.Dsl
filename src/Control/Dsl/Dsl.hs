@@ -33,6 +33,7 @@ Instead, create 'PolyCont' for both your custom keywords and built-in keywords.
 >>> import Control.Dsl.Yield
 >>> import Control.Dsl.Return
 >>> import Data.Void
+
 >>> :{
 f = do
   Yield "foo"
@@ -43,9 +44,12 @@ f = do
   return "baz"
 :}
 
-@f@ is a script that contains keywords of 'Get', 'Yield' and 'return',
-and can be used as a function that accepts a boolean parameter,
-with the help of default implementation of those keywords.
+@f@ is a script that contains keywords of
+'Control.Dsl.State.Get.Get',
+'Control.Dsl.Yield.Yield',
+and 'Control.Dsl.Return.return'.
+@f@ can be used as a function that accepts a boolean parameter,
+with the help of built-in implementations of those keywords.
 
 >>> f False :: [String]
 ["foo","baz"]
@@ -53,31 +57,22 @@ with the help of default implementation of those keywords.
 >>> f True :: [String]
 ["foo","bar","baz"]
 
-In fact, @f@ can be any type as long as the implementation of
-'Get', 'Yield' and 'return' is provided.
+In fact, @f@ can be any type
+as long as 'PolyCont' instances for involved keywords are provided.
 
 >>> :type f
 f :: (PolyCont (Yield [Char]) r (),
       PolyCont (Return [Char]) r Void, PolyCont Get r Bool) =>
      r
 
-Those implementation are provided by 'PolyCont'.
-which is an ad-hoc polymorphic delimited continuation.
-
-For example, `f` can be interpreted as impure @IO ()@,
+For example, @f@ can be interpreted as an impure @IO ()@,
 providing the following instances:
 
 >>> :{
 instance PolyCont (Yield String) (IO ()) () where
   runPolyCont (Yield a) = (Prelude.>>=) (putStrLn $ "Yield " ++ a)
-:}
-
->>> :{
 instance PolyCont Get (IO ()) Bool where
   runPolyCont Get f = putStrLn "Get" Prelude.>> f False
-:}
-
->>> :{
 instance PolyCont (Return String) (IO ()) Void where
   runPolyCont (Return a) _ = putStrLn $ "Return " ++ a
 :}
