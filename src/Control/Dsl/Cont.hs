@@ -5,6 +5,7 @@
 
 module Control.Dsl.Cont where
 
+import Control.Dsl.PolyCont
 import Prelude hiding ((>>), (>>=), return)
 
 type r !! a = Cont r a
@@ -17,3 +18,6 @@ when False _ = Cont $ \f -> f ()
 
 unless True _ = Cont $ \f -> f ()
 unless False (Cont k) = Cont k
+
+instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (Cont r b) a where
+  runPolyCont k f = Cont $ \g -> runPolyCont k $ \a -> runCont (f a) g
