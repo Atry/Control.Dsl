@@ -17,6 +17,7 @@ The type that holds states, which is defined as a plain function.
 >>> import Prelude hiding ((>>), (>>=), return)
 >>> import Control.Dsl
 >>> import Control.Dsl.Cont
+>>> import Control.Dsl.Shift
 >>> import Control.Dsl.State
 >>> import Data.Sequence
 >>> import Data.Foldable
@@ -29,7 +30,7 @@ and 'Control.Dsl.State.Put's the new 'Data.Sequence.Seq' to the updated state.
 append s = do
   buffer <- Get @(Seq String)
   Put $ buffer |> s
-  ($ ())
+  Cont ($ ())
 :}
 
 @($ ())@ creates a CPS function ,
@@ -40,12 +41,12 @@ and 'Control.Dsl.return' the concatenated buffer.
 
 >>> :{
 formatter = do
-  Cont $ append "x="
+  append "x="
   d <- Get @Double
-  Cont $ append $ show d
-  Cont $ append ",y="
+  append $ show d
+  append ",y="
   i <- Get @Integer
-  Cont $ append $ show i
+  append $ show i
   buffer <- Get @(Seq String)
   return $ concat buffer
 :}

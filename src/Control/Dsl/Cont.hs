@@ -7,14 +7,13 @@ module Control.Dsl.Cont where
 
 import Prelude hiding ((>>), (>>=), return)
 
--- ! A CPS function 
-type r !! a = (a -> r) -> r
+type r !! a = Cont r a
 
 -- ! A delimited continuation that can be used in a @do@ block.
-newtype Cont r a = Cont { runCont :: r !! a }
+newtype Cont r a = Cont { runCont :: (a -> r) -> r }
 
-when True k = Cont k
+when True (Cont k) = Cont k
 when False _ = Cont $ \f -> f ()
 
 unless True _ = Cont $ \f -> f ()
-unless False k = Cont k
+unless False (Cont k) = Cont k

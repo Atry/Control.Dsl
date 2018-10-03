@@ -4,6 +4,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE TypeOperators #-}
 
+
 module Control.Dsl.Dsl where
 
 import Control.Dsl.PolyCont
@@ -83,7 +84,7 @@ Get
 Return baz
 -}
 class Dsl k r a where
-  cpsApply :: k r a -> r !! a
+  cpsApply :: k r a -> (a -> r) -> r
 
 {- | The implementation of @<-@ statements in a @do@ block,
 which forwards to 'runCont' if @k@ is 'Cont',
@@ -101,7 +102,7 @@ f <=< g = f >=> g
 k >> a = cpsApply k $ const a
 
 -- | Keywords based on ad-hoc polymorphic delimited continuations.
-instance {-# OVERLAPPABLE #-} PolyCont k r a => Dsl k r a where
+instance {-# OVERLAPS #-} PolyCont k r a => Dsl k r a where
   cpsApply = runPolyCont
 
 -- | Keywords based on monomorphic delimited continuations.

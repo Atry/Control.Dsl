@@ -3,6 +3,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE TypeOperators #-}
+
 {-# LANGUAGE GADTs #-}
 
 module Control.Dsl.Return where
@@ -23,7 +24,7 @@ instance PolyCont (Return a) a Void where
 
 When this 'return' is present in a nested @do@ block for 'when' or 'unless',
 if the return value is not @()@,
-it will create a '!!' that performs early return,
+it will create a 'Cont' that performs early return,
 skipping the rest statements of the outer @do@ notation.
 
 ==== __Examples__
@@ -37,7 +38,7 @@ skipping the rest statements of the outer @do@ notation.
 >>> import Control.Dsl.Empty
 
 >>> :{
-earlyGenerator :: Bool -> [String] !! Integer
+earlyGenerator :: Bool -> Cont [String] Integer
 earlyGenerator earlyReturn = do
   Yield "inside earlyGenerator"
   when earlyReturn $ do
@@ -51,7 +52,7 @@ earlyGenerator earlyReturn = do
 earlyGeneratorTest :: [String]
 earlyGeneratorTest = do
   Yield "before earlyGenerator"
-  i <- Cont $ earlyGenerator True
+  i <- earlyGenerator True
   Yield "after earlyGenerator"
   Yield $ "the return value of earlyGenerator is " ++ show i
   empty
@@ -62,17 +63,11 @@ earlyGeneratorTest = do
 -}
 return a = runPolyCont (Return a) absurd
 
-instance PolyCont (Return a) (r !! a) Void where
-  runPolyCont (Return a) _ f = f a
+instance {-# OVERLAPS #-} Applicative m => PolyCont (Return a) (m a) Void where
+  runPolyCont (Return a) _ = pure a
 
-instance PolyCont (Return a) [a] Void where
-  runPolyCont (Return a) _ = [a]
+instance PolyCont (Return a) (Cont r a) Void where
+  runPolyCont (Return a) _ = Cont ($ a)
 
-instance PolyCont (Return a) (Maybe a) Void where
-  runPolyCont (Return a) _ = Just a
-
-instance PolyCont (Return a) (IO a) Void where
-  runPolyCont (Return a) _ = evaluate a
-
-instance PolyCont (Return b) (Either a b) Void where
-  runPolyCont (Return b) _ = Right b
+instance PolyCont (Return a) (b -> a) Void where
+  runPolyCont (Return a) _ = const a
