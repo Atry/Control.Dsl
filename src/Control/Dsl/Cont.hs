@@ -8,6 +8,24 @@ module Control.Dsl.Cont where
 import Control.Dsl.PolyCont
 import Prelude hiding ((>>), (>>=), return)
 
+{- | A type alias to 'Cont' for a deeply nested delimited continuation.
+
+==== __Examples__
+
+>>> :set -XRebindableSyntax
+>>> import Prelude hiding ((>>), (>>=), return)
+>>> import Control.Dsl
+>>> import Control.Dsl.Yield
+>>> import Control.Dsl.Empty
+>>> :{
+f :: IO () !! [Integer] !! [String] !! [Double]
+f = do
+  Yield "foo"
+  Yield 0.5
+  Yield 42
+  empty
+:}
+-}
 type r !! a = Cont r a
 
 -- ! A delimited continuation that can be used in a @do@ block.
