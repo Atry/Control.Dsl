@@ -1,4 +1,4 @@
-# Dsl
+# `Control.Dsl`: An alternative to monads
 
 The `Prelude.>>=` combinator limits the return type as a `m b`, which cause Monads not composable. In order to ease this restrictions, this proposal introduces another type class `Dsl` for do notation.
 
