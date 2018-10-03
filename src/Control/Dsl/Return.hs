@@ -10,7 +10,6 @@ module Control.Dsl.Return where
 
 import Prelude hiding ((>>), (>>=), return)
 import Control.Dsl.PolyCont
-import Control.Dsl.Cont
 import Control.Exception
 import Data.Void
 
@@ -35,6 +34,7 @@ skipping the rest statements of the outer @do@ notation.
 >>> import Control.Dsl
 >>> import Control.Dsl.Return
 >>> import Control.Dsl.Yield
+>>> import Control.Dsl.Cont
 >>> import Control.Dsl.Empty
 
 >>> :{
@@ -65,9 +65,3 @@ return a = runPolyCont (Return a) absurd
 
 instance {-# OVERLAPS #-} Applicative m => PolyCont (Return a) (m a) Void where
   runPolyCont (Return a) _ = pure a
-
-instance PolyCont (Return a) (Cont r a) Void where
-  runPolyCont (Return a) _ = Cont ($ a)
-
-instance PolyCont (Return a) (b -> a) Void where
-  runPolyCont (Return a) _ _ = a

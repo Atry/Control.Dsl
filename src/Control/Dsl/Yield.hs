@@ -51,5 +51,5 @@ data Yield a r b where
 instance PolyCont (Yield a) [a] () where
   runPolyCont (Yield a) f = a : f ()
 
-instance PolyCont (Yield a) (r !! [a]) () where
+instance PolyCont (Yield a) (Cont r [a]) () where
   runPolyCont (Yield a) f = Cont $ \g -> runCont (f ()) $ g . (a :)
