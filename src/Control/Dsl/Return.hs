@@ -70,4 +70,4 @@ instance PolyCont (Return a) (Cont r a) Void where
   runPolyCont (Return a) _ = Cont ($ a)
 
 instance PolyCont (Return a) (b -> a) Void where
-  runPolyCont (Return a) _ = const a
+  runPolyCont (Return a) _ _ = a

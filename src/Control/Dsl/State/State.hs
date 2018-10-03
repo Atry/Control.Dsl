@@ -6,6 +6,9 @@
 
 module Control.Dsl.State.State where
 
+import Control.Dsl.PolyCont
+import Prelude hiding ((>>), (>>=), return)
+
 {- |
 The type that holds states, which is defined as a plain function.
 
@@ -64,3 +67,6 @@ or additional unused parameters.
 "x=0.5,y=42"
 -}
 type State a b = a -> b
+
+instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (State b r) a where
+  runPolyCont k f b = runPolyCont k $ \a -> f a b

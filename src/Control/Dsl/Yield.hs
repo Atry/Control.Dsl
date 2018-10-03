@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RebindableSyntax #-}
+{-# LANGUAGE TypeOperators #-}
 
 {- |
 Description : Generators
@@ -13,7 +14,9 @@ similar to the @yield@ keyword in C#, Python, and ECMAScript.
 -}
 module Control.Dsl.Yield where
 
+import Control.Dsl.Cont
 import Control.Dsl.PolyCont
+import Prelude hiding ((>>), (>>=), return)
 
 {- | This @Yield@ keyword produces an element in a list generator
 
@@ -47,3 +50,6 @@ data Yield a r b where
 
 instance PolyCont (Yield a) [a] () where
   runPolyCont (Yield a) f = a : f ()
+
+instance PolyCont (Yield a) (r !! [a]) () where
+  runPolyCont (Yield a) f = Cont $ \g -> runCont (f ()) $ g . (a :)
