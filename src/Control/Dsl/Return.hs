@@ -13,11 +13,11 @@ import Control.Dsl.PolyCont
 import Control.Exception
 import Data.Void
 
-data Return a r b where
-  Return :: a -> Return a r Void
+data Return r' r a where
+  Return :: r' -> Return r' r Void
 
-instance PolyCont (Return a) a Void where
-  runPolyCont (Return a) _ = a
+instance PolyCont (Return r) r Void where
+  runPolyCont (Return r) _ = r
 
 {- | Lift a value to the return type, similar to 'Prelude.return'.
 
@@ -61,7 +61,7 @@ earlyGeneratorTest = do
 >>> earlyGeneratorTest
 ["before earlyGenerator","inside earlyGenerator","early return","after earlyGenerator","the return value of earlyGenerator is 1"]
 -}
-return a = runPolyCont (Return a) absurd
+return r = runPolyCont (Return r) absurd
 
-instance {-# OVERLAPS #-} Applicative m => PolyCont (Return a) (m a) Void where
-  runPolyCont (Return a) _ = pure a
+instance {-# OVERLAPS #-} Applicative m => PolyCont (Return r) (m r) Void where
+  runPolyCont (Return r) _ = pure r

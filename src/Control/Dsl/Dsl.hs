@@ -75,7 +75,7 @@ instance PolyCont (Yield String) (IO ()) () where
 instance PolyCont Get (IO ()) Bool where
   runPolyCont Get f = putStrLn "Get" Prelude.>> f False
 instance PolyCont (Return String) (IO ()) Void where
-  runPolyCont (Return a) _ = putStrLn $ "Return " ++ a
+  runPolyCont (Return r) _ = putStrLn $ "Return " ++ r
 :}
 
 >>> f :: IO ()

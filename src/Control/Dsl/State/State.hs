@@ -71,7 +71,7 @@ or additional unused parameters.
 >>> formatter "unused parameter" initialBuffer y x :: String
 "x=0.5,y=42"
 -}
-type State s a = s -> a
+type State = (->)
 
 instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (State s r) a where
   runPolyCont k f s = runPolyCont k $ \a -> f a s

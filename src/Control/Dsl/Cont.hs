@@ -32,7 +32,7 @@ f = do
   empty
 :}
 -}
-type r !! a = Cont r a
+type (!!) = Cont
 
 -- ! A delimited continuation that can be used in a @do@ block.
 newtype Cont r a = Cont { runCont :: (a -> r) -> r }
@@ -46,11 +46,11 @@ unless False (Cont k) = Cont k
 guard True = Cont $ \f -> f ()
 guard False = Cont $ \f -> empty
 
-instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (Cont r b) a where
+instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (Cont r a') a where
   runPolyCont k f = Cont $ \g -> runPolyCont k $ \a -> runCont (f a) g
 
-instance PolyCont (Return a) (Cont r a) Void where
-  runPolyCont (Return a) _ = Cont ($ a)
+instance PolyCont (Return r) (Cont r' r) Void where
+  runPolyCont (Return r) _ = Cont ($ r)
 
 instance PolyCont Empty r Void => PolyCont Empty (Cont r a) Void where
   runPolyCont k _ = Cont (const empty)

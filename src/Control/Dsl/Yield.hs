@@ -45,11 +45,11 @@ randomGenerator seed =
 >>> take 5 $ randomGenerator 2463534242
 [723471715,2497366906,2064144800,2008045182,3532304609]
 -}
-data Yield a r b where
-  Yield :: a -> Yield a r ()
+data Yield x r a where
+  Yield :: x -> Yield x r ()
 
-instance PolyCont (Yield a) [a] () where
-  runPolyCont (Yield a) f = a : f ()
+instance PolyCont (Yield x) [x] () where
+  runPolyCont (Yield x) f = x : f ()
 
-instance PolyCont (Yield a) (Cont r [a]) () where
-  runPolyCont (Yield a) f = Cont $ \g -> runCont (f ()) $ g . (a :)
+instance PolyCont (Yield x) (Cont r [x]) () where
+  runPolyCont (Yield x) f = Cont $ \g -> runCont (f ()) $ \xs -> g (x : xs)
