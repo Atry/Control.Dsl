@@ -19,7 +19,7 @@ since a 'PolyCont' does not support answer type modification.
 -}
 class PolyCont k r a where
   -- | Run as a CPS function .
-  runPolyCont :: k r0 a -> r !! a
+  runPolyCont :: k d a -> r !! a
 
 instance {-# OVERLAPPABLE #-} PolyCont k r a => PolyCont k (b -> r) a where
   runPolyCont k f b = runPolyCont k $ \a -> f a b
