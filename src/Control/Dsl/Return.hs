@@ -19,7 +19,7 @@ data Return a r b where
 instance PolyCont (Return a) a Void where
   runPolyCont (Return a) _ = a
 
-{- | Lift a value to the return type, similar to 'Control.Monad.return'.
+{- | Lift a value to the return type, similar to 'Prelude.return'.
 
 When this 'return' is present in a nested @do@ block for 'when' or 'unless',
 if the return value is not @()@,
@@ -73,3 +73,6 @@ instance PolyCont (Return a) (Maybe a) Void where
 
 instance PolyCont (Return a) (IO a) Void where
   runPolyCont (Return a) _ = evaluate a
+
+instance PolyCont (Return b) (Either a b) Void where
+  runPolyCont (Return b) _ = Right b

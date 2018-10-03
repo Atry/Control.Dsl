@@ -11,7 +11,7 @@ module Control.Dsl(
   module Control.Dsl.Cont
 ) where
 
-import Control.Dsl.Dsl (Dsl, (>>=), (>>))
+import Control.Dsl.Dsl hiding (cpsApply)
 import Control.Dsl.Return (return)
 import Control.Dsl.Cont (when, unless)
 import Control.Dsl.Empty (guard)

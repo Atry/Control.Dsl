@@ -91,6 +91,12 @@ otherwise forwards to 'runPolyCont'.
 -}
 (>>=) k = cpsApply k
 
+f =<< k = k >>= f
+
+(f >=> g) k = f k >>= g
+
+f <=< g = f >=> g
+
 -- | The implementation of statements with no value in a @do@ block.
 k >> a = cpsApply k $ const a
 
@@ -102,3 +108,5 @@ instance {-# OVERLAPPABLE #-} PolyCont k r a => Dsl k r a where
 instance Dsl Cont r a where
   cpsApply = runCont
 
+forever :: Dsl k r a => k r a -> r
+forever k = k >> forever k
