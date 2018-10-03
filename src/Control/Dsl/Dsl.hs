@@ -49,8 +49,8 @@ f = do
 'Control.Dsl.State.Get.Get',
 'Control.Dsl.Yield.Yield',
 and 'Control.Dsl.Return.return'.
-@f@ can be used as a function that accepts a boolean parameter,
-with the help of built-in implementations of those keywords.
+With the help of built-in 'PolyCont' instances for those keywords,
+@f@ can be used as a function that accepts a boolean parameter.
 
 >>> f False :: [String]
 ["foo","baz"]
