@@ -1,0 +1,45 @@
+name: control-dsl-state
+version: 0.2.0.0
+github: Atry/control-dsl
+license: BSD3
+category: Control, DSL, Effect, General, Language, Mutable State, IO, Polymorphism
+synopsis: An alternative to monads
+author: Yang Bo
+maintainer: pop.atry@gmail.com
+copyright: 2018 Yang Bo
+extra-source-files:
+  - README.md
+  - ChangeLog.md
+description: 'Please see the README on GitHub at <https://github.com/Atry/control-dsl#readme>'
+dependencies:
+  - base >= 4.8 && < 5
+  - control-dsl-cont
+library:
+  source-dirs: src
+  other-modules: []
+#    - Control.Dsl.State.State
+  other-extensions:
+    - RebindableSyntax
+    - MultiParamTypeClasses
+    - TypeOperators
+    - FlexibleInstances
+    - FlexibleContexts
+    - UndecidableInstances
+    - RankNTypes
+    - GADTs
+tests:
+  control-dsl-state-doctests:
+    main: doctest-driver.hs
+    source-dirs: test
+    ghc-options:
+      - '-threaded'
+      - '-rtsopts'
+      - '-with-rtsopts=-N'
+    dependencies:
+      - control-dsl-state
+      - containers
+      - temporary
+      - doctest
+      - doctest-discover
+    other-extensions:
+      - TypeApplications

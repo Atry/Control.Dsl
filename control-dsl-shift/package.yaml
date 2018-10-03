@@ -1,6 +1,6 @@
-name: do-notation-dsl
+name: control-dsl-shift
 version: 0.2.0.0
-github: Atry/do-notation-dsl
+github: Atry/control-dsl
 license: BSD3
 category: Control, DSL, Effect, General, Language, Mutable State, IO, Polymorphism
 synopsis: An alternative to monads
@@ -10,14 +10,13 @@ copyright: 2018 Yang Bo
 extra-source-files:
   - README.md
   - ChangeLog.md
-description: 'Please see the README on GitHub at <https://github.com/Atry/do-notation-dsl#readme>'
+description: 'Please see the README on GitHub at <https://github.com/Atry/control-dsl#readme>'
 dependencies:
   - base >= 4.8 && < 5
+  - control-dsl-cont
 library:
   source-dirs: src
-  other-modules:
-    - Control.Dsl.Dsl
-    - Control.Dsl.State.State
+  other-modules: []
   other-extensions:
     - RebindableSyntax
     - MultiParamTypeClasses
@@ -28,7 +27,7 @@ library:
     - RankNTypes
     - GADTs
 tests:
-  doctests:
+  control-dsl-shift-doctests:
     main: doctest-driver.hs
     source-dirs: test
     ghc-options:
@@ -36,7 +35,7 @@ tests:
       - '-rtsopts'
       - '-with-rtsopts=-N'
     dependencies:
-      - do-notation-dsl
+      - control-dsl-shift
       - containers
       - temporary
       - doctest
