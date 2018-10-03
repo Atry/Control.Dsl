@@ -52,5 +52,5 @@ instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (Cont r b) a where
 instance PolyCont (Return a) (Cont r a) Void where
   runPolyCont (Return a) _ = Cont ($ a)
 
-instance {-# OVERLAPS #-} PolyCont Empty r Void => PolyCont Empty (Cont r a) Void where
+instance PolyCont Empty r Void => PolyCont Empty (Cont r a) Void where
   runPolyCont k _ = Cont (const empty)
