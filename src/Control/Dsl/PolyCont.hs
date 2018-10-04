@@ -5,7 +5,7 @@
 
 module Control.Dsl.PolyCont where
 
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 
 {- | A use case of an __ad-hoc polymorphic delimited continuation__.
 

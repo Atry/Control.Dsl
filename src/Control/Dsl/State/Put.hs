@@ -5,7 +5,7 @@
 
 module Control.Dsl.State.Put where
 
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 import Control.Dsl.PolyCont
 import Control.Dsl.State.State
 

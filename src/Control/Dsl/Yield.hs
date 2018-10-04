@@ -16,7 +16,7 @@ module Control.Dsl.Yield where
 
 import Control.Dsl.Cont
 import Control.Dsl.PolyCont
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 
 {- | This @Yield@ keyword produces an element in a list generator
 
@@ -28,7 +28,7 @@ that returns an infinite list of generated numbers.
 
 >>> :set -XTypeApplications
 >>> :set -XRebindableSyntax
->>> import Prelude hiding ((>>), (>>=), return)
+>>> import Prelude hiding ((>>), (>>=), return, fail)
 >>> import Control.Dsl
 >>> import Data.Word
 >>> import Data.Bits

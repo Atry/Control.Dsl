@@ -10,7 +10,7 @@ module Control.Dsl.Shift where
 
 import Data.Void
 import Control.Dsl.PolyCont
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 
 -- | A keyword to extract the value of a CPS function .
 newtype Shift r' r a = Shift ((a -> r') -> r')

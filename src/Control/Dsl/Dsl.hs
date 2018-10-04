@@ -4,12 +4,11 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE TypeOperators #-}
 
-
 module Control.Dsl.Dsl where
 
 import Control.Dsl.PolyCont
 import Control.Dsl.Cont
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 
 {- | An use case of a keyword in a @do@ block.
 
@@ -21,14 +20,14 @@ Instead, create 'PolyCont' for both your custom keywords and built-in keywords.
 
 ==== __Examples__
 
->>> :set -XTypeFamilies
+>>> :set -XGADTs
 >>> :set -XMultiParamTypeClasses
 >>> :set -XFlexibleInstances
 >>> :set -XFlexibleContexts
 >>> :set -XRebindableSyntax
 >>> :set -XTypeApplications
 >>> import qualified Prelude
->>> import Prelude hiding ((>>), (>>=), return)
+>>> import Prelude hiding ((>>), (>>=), return, fail)
 >>> import Control.Dsl
 >>> import Control.Dsl.State.Get
 >>> import Control.Dsl.Yield

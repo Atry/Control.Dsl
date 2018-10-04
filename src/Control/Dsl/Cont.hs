@@ -11,7 +11,7 @@ import Control.Dsl.Return
 import Control.Dsl.Empty
 import Control.Dsl.PolyCont
 import Data.Void
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 
 {- | A type alias to 'Cont' for a deeply nested delimited continuation.
 
@@ -19,7 +19,7 @@ import Prelude hiding ((>>), (>>=), return)
 
 >>> :set -XTypeOperators
 >>> :set -XRebindableSyntax
->>> import Prelude hiding ((>>), (>>=), return)
+>>> import Prelude hiding ((>>), (>>=), return, fail)
 >>> import Control.Dsl
 >>> import Control.Dsl.Yield
 >>> import Control.Dsl.Empty

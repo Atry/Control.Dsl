@@ -11,7 +11,7 @@ import Data.Void
 import Control.Dsl.Empty
 import Control.Dsl.Return
 import Control.Dsl.PolyCont
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 
 {- |
 The type that holds states, which is defined as a plain function.
@@ -21,7 +21,7 @@ The type that holds states, which is defined as a plain function.
 >>> :set -XFlexibleContexts
 >>> :set -XTypeApplications
 >>> :set -XRebindableSyntax
->>> import Prelude hiding ((>>), (>>=), return)
+>>> import Prelude hiding ((>>), (>>=), return, fail)
 >>> import Control.Dsl
 >>> import Control.Dsl.Cont
 >>> import Control.Dsl.Shift

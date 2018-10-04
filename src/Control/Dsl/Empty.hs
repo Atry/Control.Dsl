@@ -8,7 +8,7 @@ module Control.Dsl.Empty where
 import Control.Dsl.PolyCont
 import Data.Void
 import qualified Control.Applicative
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 
 data Empty r a where
   Empty :: Empty r Void

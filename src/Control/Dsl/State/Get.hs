@@ -6,7 +6,7 @@
 
 module Control.Dsl.State.Get where
 
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 import Control.Dsl.PolyCont
 import Control.Dsl.State.State
 
