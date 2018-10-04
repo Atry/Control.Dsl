@@ -3,37 +3,35 @@
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-{- |
+{- | This "Control.Dsl" module and its submodules provide a toolkit to create extensible Domain Specific Languages in @do@-notation.
 
-=== Examples
+A DSL @do@ block can contain heterogeneous statements from different vendors. Each statement is a keyword interpreted by a 'Dsl' type class instance, either effectful or purely. A DSL @do@ block is abstract. The type class requirements can be automatically inferred. Therefore, the data structures and implementation of interpreters can be switched by providing different instances.
 
-==== DSL model
+= Getting started
 
->>> :set -XGADTs
->>> :set -XFlexibleContexts
->>> :set -XFlexibleInstances
->>> :set -XMultiParamTypeClasses
->>> :set -XUndecidableInstances
->>> :set -XTypeApplications
+This package provides 'Dsl' type class used in @do@ notation,
+as a replacement to 'Control.Monad.Monad'.
+
+@RebindableSyntax@ extension is required to enable DSL @do@ notation.
+
 >>> :set -XRebindableSyntax
 >>> import Prelude hiding ((>>), (>>=), return, fail)
->>> import qualified Prelude
 >>> import Control.Dsl
->>> import Control.Dsl.PolyCont
->>> import Control.Dsl.Monadic
->>> import Control.Dsl.Cont
->>> import Control.Dsl.Yield
->>> import Control.Dsl.Return
->>> import Control.Dsl.Empty
->>> import Data.Void
->>> import System.IO
->>> import System.IO.Temp
 
->>> data GetLine r a where GetLine :: GetLine r String
+== DSL model
+
+Suppose you are creating a DSL for console IO,
+you need to define some keywords allowed in the DSL.
+
+Each keyword is a GADT:
+
 >>> data MaxLengthConfig r a where MaxLengthConfig :: MaxLengthConfig r Int
+>>> data GetLine r a where GetLine :: GetLine r String
 >>> data PutStrLn r a where PutStrLn :: String -> PutStrLn r ()
 
-==== DSL script
+== DSL script
+
+Then those keywords can be used in @do@ blocks:
 
 >>> :{
 dslScript = do
@@ -41,10 +39,21 @@ dslScript = do
   line1 <- GetLine
   line2 <- GetLine
   when (length line1 + length line2 > maxLength) $ do
-    fail "The input is too long"
+    PutStrLn "The input is too long"
+    fail "Illegal input"
   PutStrLn ("The input is " ++ line1 ++ " and " ++ line2)
   return ()
 :}
+
+The above @dslScript@ function creates a DSL \"script\"
+from keywords and some built-in control flow functions.
+
+Keywords and the result statement 'return' and 'failed'
+are ad-hoc polymorphic delimited continuations,
+interpreted by 'Dsl.Contro.PolyCont.PolyCont'.
+
+The type of @r@ varies for different instances of 'Dsl.Contro.PolyCont.PolyCont',
+as show below:
 
 >>> :type dslScript
 dslScript
@@ -88,10 +97,10 @@ instance PolyCont GetLine PureInterpreter String where
 
 >>> longInput = [replicate 40 '*', replicate 41 '*']
 >>> runCont (runScriptPurely 80 longInput) errorHandler
-["(handled) user error (The input is too long)"]
+["The input is too long","(handled) user error (Illegal input)"]
 
 >>> runCont (runScriptPurely 80 ["ONE_LINE"]) errorHandler
-["(handled) user error (Pattern match failure in do expression at ..."]
+["(handled) user error (Pattern match failure in do expression at <interactive>..."]
 
 ==== Effectful interpreter
 
@@ -130,6 +139,23 @@ withSystemTempFile "tmp-input-file" $ \_ -> \h -> do
   runScriptEffectfully h
 :}
 The input is LINE_1 and LINE_2
+
+== Allowed statements in DSL @do@ blocks
+
+A DSL @do@ block contains keywords, control flow operators,
+and the final result:
+
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+|                   |                                                                                              Keywords                                                                                              |          Control flow operators         |                   Results                   |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+|      Examples     | 'Control.Dsl.Shift.Shift','Control.Dsl.Yield.Yield','Control.Dsl.State.Get.Get','Control.Dsl.State.Put.Put', 'Control.Dsl.Monadic.Monadic', 'Control.Dsl.Return.Return', 'Control.Dsl.Empty.Empty' | 'ifThenElse', 'when', 'unless', 'guard' | 'return', 'fail', 'Control.Dsl.Empty.empty' |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+|    Defined as a   |                                                                                                GADT                                                                                                |                 function                |                   function                  |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+|   Interpreted by  |                                                                                   'Control.Dsl.PolyCont.PolyCont'                                                                                  |         'Control.Dsl.Cont.Cont'         |       'Control.Dsl.PolyCont.PolyCont'       |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+| Can be present as |                                                                                                    not the last statement of a @do@ block                                                                                                    |      the last statement of a @do@ block     |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------+
 -}
 module Control.Dsl(
   module Control.Dsl.Dsl,
@@ -142,3 +168,25 @@ import Control.Dsl.Return (return, fail)
 import Control.Dsl.Cont (ifThenElse, when, unless, guard)
 
 import Control.Dsl.State -- For orphan instances
+
+import qualified Control.Monad -- For resolving haddock links
+import qualified Control.Dsl.PolyCont -- For resolving haddock links
+import qualified Control.Dsl.Cont -- For resolving haddock links
+
+-- $setup
+-- >>> :set -XGADTs
+-- >>> :set -XFlexibleContexts
+-- >>> :set -XFlexibleInstances
+-- >>> :set -XMultiParamTypeClasses
+-- >>> :set -XUndecidableInstances
+-- >>> :set -XTypeApplications
+-- >>> import qualified Prelude
+-- >>> import Control.Dsl.PolyCont
+-- >>> import Control.Dsl.Monadic
+-- >>> import Control.Dsl.Cont
+-- >>> import Control.Dsl.Yield
+-- >>> import Control.Dsl.Return
+-- >>> import Control.Dsl.Empty
+-- >>> import Data.Void
+-- >>> import System.IO
+-- >>> import System.IO.Temp
