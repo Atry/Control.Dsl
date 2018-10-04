@@ -16,5 +16,9 @@ data Empty r a where
 instance {-# OVERLAPS #-} Control.Applicative.Alternative m => PolyCont Empty (m a) Void where
   runPolyCont Empty _ = Control.Applicative.empty
 
+{- | Return an empty @a@, similar to 'Control.Alternative.empty'.
+
+This 'empty' function aims to be used as the last statement of a @do@ block.
+-}
 empty :: PolyCont Empty a Void => a
 empty = runPolyCont Empty absurd

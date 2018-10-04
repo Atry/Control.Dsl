@@ -19,10 +19,12 @@ data Return r' r a where
 instance PolyCont (Return r) r Void where
   runPolyCont (Return r) _ = r
 
-{- | Lift a value to the return type, similar to 'Prelude.return'.
+{- | Lift @r@ to the answer type, similar to 'Prelude.return'.
 
-When this 'return' is present in a nested @do@ block for 'when' or 'unless',
-if the return value is not @()@,
+This 'return' function aims to be used as the last statement of a @do@ block.
+
+When 'return' is present in a nested @do@ block for 'when' or 'unless',
+if the @r@ is not @()@,
 it will create a 'Cont' that performs early return,
 skipping the rest statements of the outer @do@ notation.
 
@@ -63,6 +65,10 @@ earlyGeneratorTest = do
 -}
 return r = runPolyCont (Return r) absurd
 
+{- | Lift an 'IOError' to the answer type, similar to 'Prelude.fail'.
+
+This 'fail' function aims to be used as the last statement of a @do@ block.
+-}
 fail r = return (userError r)
 
 instance {-# OVERLAPS #-} Applicative m => PolyCont (Return r) (m r) Void where
