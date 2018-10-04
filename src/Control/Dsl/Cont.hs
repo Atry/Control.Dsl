@@ -37,7 +37,7 @@ type (!!) = Cont
 -- ! A delimited continuation that can be used in a @do@ block.
 newtype Cont r a = Cont { runCont :: (a -> r) -> r }
 
-ifThenElse :: Bool -> Cont r a -> Cont r a -> Cont r a
+ifThenElse :: Bool -> Cont r () -> Cont r () -> Cont r ()
 ifThenElse True k _ = k
 ifThenElse False _ k = k
 
