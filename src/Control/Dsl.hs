@@ -139,6 +139,6 @@ module Control.Dsl(
 
 import Control.Dsl.Dsl hiding (cpsApply)
 import Control.Dsl.Return (return, fail)
-import Control.Dsl.Cont (when, unless, guard)
+import Control.Dsl.Cont (ifThenElse, when, unless, guard)
 
 import Control.Dsl.State -- For orphan instances
