@@ -8,7 +8,7 @@
 
 module Control.Dsl.Return where
 
-import Prelude hiding ((>>), (>>=), return)
+import Prelude hiding ((>>), (>>=), return, fail)
 import Control.Dsl.PolyCont
 import Control.Exception
 import Data.Void
@@ -30,7 +30,7 @@ skipping the rest statements of the outer @do@ notation.
 
 >>> :set -XTypeOperators
 >>> :set -XRebindableSyntax
->>> import Prelude hiding ((>>), (>>=), return)
+>>> import Prelude hiding ((>>), (>>=), return, fail)
 >>> import Control.Dsl
 >>> import Control.Dsl.Return
 >>> import Control.Dsl.Yield
@@ -62,6 +62,8 @@ earlyGeneratorTest = do
 ["before earlyGenerator","inside earlyGenerator","early return","after earlyGenerator","the return value of earlyGenerator is 1"]
 -}
 return r = runPolyCont (Return r) absurd
+
+fail r = return (userError r)
 
 instance {-# OVERLAPS #-} Applicative m => PolyCont (Return r) (m r) Void where
   runPolyCont (Return r) _ = pure r
