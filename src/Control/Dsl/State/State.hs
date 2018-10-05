@@ -37,12 +37,10 @@ and 'Control.Dsl.State.Put's the new 'Data.Sequence.Seq' as the updated state.
 >>> :{
 append s = do
   buffer <- Get @(Seq String)
-  Put $ buffer |> s
-  Cont ($ ())
+  toCont $ Put $ buffer |> s
 :}
 
-@($ ())@ creates a CPS function ,
-which can be then converted to 'Control.Dsl.Cont.Cont's.
+@append@ creates 'Control.Dsl.Cont.Cont' that can be used in other @do@ blocks.
 
 A @formatter@ @append@s 'String' to its internal buffer,
 and 'Control.Dsl.return' the concatenated buffer.
