@@ -14,9 +14,10 @@ import Prelude hiding ((>>), (>>=), return, fail)
 
 == Allowed statements in DSL @do@ blocks
 
-Statements in a DSL @do@ block is a delimited continuation
+Statements in a DSL @do@ block are delimited continuations
 (except the last statement),
-which can be a GADT keyword, a control flow operator.
+which can be either ad-hoc polymorphic GADT keywords,
+or monomorphic control flow operators.
 
 The last statement is the final result of the @do@ block,
 or the /answer type/ of other delimited continuation statements.
