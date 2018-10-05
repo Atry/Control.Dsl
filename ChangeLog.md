@@ -1,5 +1,8 @@
 # Changelog for `Control.Dsl`
 
+## 0.2.0.2
+* Fix tests in GHC 8.6.1
+
 ## 0.2.0.1
 * Improved documentation.
 
