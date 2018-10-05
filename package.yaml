@@ -1,6 +1,6 @@
 name: control-dsl
 version: 0.2.0.0
-github: Atry/control-dsl
+github: Atry/Control.Dsl
 license: BSD3
 category: Control, DSL, Effect, General, Language, Mutable State, IO, Polymorphism
 synopsis: An alternative to monads
