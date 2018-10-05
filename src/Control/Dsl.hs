@@ -101,6 +101,7 @@ instance PolyCont GetLine PureInterpreter String where
     Put xs
     return x
 :}
+...
 
 The 'Contro.Dsl.PolyCont.PolyCont' instance for @GetLine@ is implemented as a
 'Contro.Dsl.Cont' that contains a DSL @do@ block of atomic statements.
