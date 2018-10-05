@@ -72,7 +72,7 @@ dslBlock
 
 The type @r@ varies from different 'Control.Dsl.PolyCont.PolyCont' instances.
 By defining 'Control.Dsl.PolyCont.PolyCont' instances for @PureInterpreter@,
-you can make @r@ be a @PureInterpreter@:
+you can make @r@ be a pure interpreter:
 
 >>> type PureInterpreter = Int -> [String] -> Cont [String] IOError
 
@@ -156,6 +156,16 @@ instance PolyCont PutStrLn (IO ()) () where
 instance PolyCont (Return IOError) (IO ()) Void where
   runPolyCont (Return e) _ = hPutStrLn stderr (show e)
 :}
+
+The above three 'Control.Dsl.PolyCont.PolyCont' instances are not directly
+implemented for @EffectfulInterpreter@.
+Instead, they are implemented for @IO ()@.
+Then, instances for @EffectfulInterpreter@ can be automatically derived from
+instances for @IO ()@.
+There are two built-in 'Control.Dsl.PolyCont.PolyCont' derivation rules,
+for 'Control.Dsl.Cont.Cont' and 'State', respectively.
+What interesting is that 'State' is defined as plain function,
+which exactly matches the type of @EffectfulInterpreter@.
 
 === Running the DSL effectfully
 
