@@ -3,9 +3,17 @@
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-{- | This "Control.Dsl" module and its submodules provide a toolkit to create extensible Domain Specific Languages in @do@-notation.
+{- | This "Control.Dsl" module and its submodules provide a toolkit
+to create extensible Domain Specific Languages in @do@-notation.
 
-A DSL @do@ block can contain heterogeneous statements from different vendors. Each statement is a keyword interpreted by a 'Dsl' type class instance, either effectful or purely. A DSL @do@ block is abstract. The type class requirements can be automatically inferred. Therefore, the data structures and implementation of interpreters can be switched by providing different instances.
+A DSL @do@ block contains heterogeneous statements from different vendors.
+A statement can be defined as a GADT,
+interpreted by a 'Dsl' type class instance, either effectful or purely.
+
+A DSL @do@ block is abstract.
+When creating the block, the type class requirements is automatically inferred.
+Therefore, the data structures and implementation of interpreters
+can be switched by providing different instances.
 
 = Getting started
 
@@ -48,12 +56,10 @@ dslScript = do
 The above @dslScript@ function creates a DSL \"script\"
 from keywords and some built-in control flow functions.
 
-Keywords and the result statement 'return' and 'failed'
+Keywords and the result statement 'return' and 'fail'
 are ad-hoc polymorphic delimited continuations,
-interpreted by 'Dsl.Contro.PolyCont.PolyCont'.
-
-The type of @r@ varies for different instances of 'Dsl.Contro.PolyCont.PolyCont',
-as show below:
+interpreted by 'Contro.Dsl.PolyCont.PolyCont',
+which can be automatically inferred:
 
 >>> :type dslScript
 dslScript
@@ -62,7 +68,11 @@ dslScript
       PolyCont PutStrLn r ()) =>
      r
 
-==== Pure interpreter
+=== Creating a pure interpreter
+
+The type of @r@ varies from different 'Contro.Dsl.PolyCont.PolyCont' instances.
+By defining 'Contro.Dsl.PolyCont.PolyCont' instances for @PureInterpreter@,
+you can make @r@ be a @PureInterpreter@:
 
 >>> type PureInterpreter = Int -> [String] -> Cont [String] IOError
 
@@ -81,6 +91,9 @@ instance PolyCont (Return ()) PureInterpreter Void where
   runPolyCont (Return ()) = runPolyCont Empty
 :}
 
+The above three 'Contro.Dsl.PolyCont.PolyCont' instances are implemented as
+forwarders to other existing keywords.
+
 >>> :{
 instance PolyCont GetLine PureInterpreter String where
   runPolyCont k = runCont $ do
@@ -88,6 +101,11 @@ instance PolyCont GetLine PureInterpreter String where
     Put xs
     return x
 :}
+
+The 'Contro.Dsl.PolyCont.PolyCont' instance for @GetLine@ is implemented as a
+'Contro.Dsl.Cont' that contains a DSL @do@ block of atomic statements.
+
+=== Running the script purely
 
 >>> runScriptPurely = dslScript :: PureInterpreter
 
@@ -102,7 +120,10 @@ instance PolyCont GetLine PureInterpreter String where
 >>> runCont (runScriptPurely 80 ["ONE_LINE"]) errorHandler
 ["(handled) user error (Pattern match failure in do expression at <interactive>..."]
 
-==== Effectful interpreter
+=== Creating an effectful interpreter
+
+Alternatively, @dslScript@ can run effectfully by providing effectful
+'Contro.Dsl.PolyCont.PolyCont' instances.
 
 >>> type EffectfulInterpreter = Handle -> IO ()
 
@@ -129,6 +150,8 @@ instance PolyCont (Return IOError) (IO ()) Void where
   runPolyCont (Return e) _ = hPutStrLn stderr (show e)
 :}
 
+=== Running the script purely
+
 >>> runScriptEffectfully = dslScript :: EffectfulInterpreter
 
 >>> :{
@@ -139,23 +162,6 @@ withSystemTempFile "tmp-input-file" $ \_ -> \h -> do
   runScriptEffectfully h
 :}
 The input is LINE_1 and LINE_2
-
-== Allowed statements in DSL @do@ blocks
-
-A DSL @do@ block contains keywords, control flow operators,
-and the final result:
-
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
-|                   |                                                                                              Keywords                                                                                              |          Control flow operators         |                   Results                   |
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
-|      Examples     | 'Control.Dsl.Shift.Shift','Control.Dsl.Yield.Yield','Control.Dsl.State.Get.Get','Control.Dsl.State.Put.Put', 'Control.Dsl.Monadic.Monadic', 'Control.Dsl.Return.Return', 'Control.Dsl.Empty.Empty' | 'ifThenElse', 'when', 'unless', 'guard' | 'return', 'fail', 'Control.Dsl.Empty.empty' |
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
-|    Defined as a   |                                                                                                GADT                                                                                                |                 function                |                   function                  |
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
-|   Interpreted by  |                                                                                   'Control.Dsl.PolyCont.PolyCont'                                                                                  |         'Control.Dsl.Cont.Cont'         |       'Control.Dsl.PolyCont.PolyCont'       |
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
-| Can be present as |                                                                                                    not the last statement of a @do@ block                                                                                                    |      the last statement of a @do@ block     |
-+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------+
 -}
 module Control.Dsl(
   module Control.Dsl.Dsl,
@@ -167,11 +173,16 @@ import Control.Dsl.Dsl hiding (cpsApply)
 import Control.Dsl.Return (return, fail)
 import Control.Dsl.Cont (when, unless, guard)
 
-import Control.Dsl.State -- For orphan instances
+import Control.Dsl.State.State -- For orphan instances
 
 import qualified Control.Monad -- For resolving haddock links
 import qualified Control.Dsl.PolyCont -- For resolving haddock links
 import qualified Control.Dsl.Cont -- For resolving haddock links
+import qualified Control.Dsl.Return -- For resolving haddock links
+import qualified Control.Dsl.Empty -- For resolving haddock links
+import qualified Control.Dsl.Yield -- For resolving haddock links
+import qualified Control.Dsl.State.Get -- For resolving haddock links
+import qualified Control.Dsl.State.Put -- For resolving haddock links
 
 -- $setup
 -- >>> :set -XGADTs
@@ -187,6 +198,7 @@ import qualified Control.Dsl.Cont -- For resolving haddock links
 -- >>> import Control.Dsl.Yield
 -- >>> import Control.Dsl.Return
 -- >>> import Control.Dsl.Empty
+-- >>> import Control.Dsl.State
 -- >>> import Data.Void
 -- >>> import System.IO
 -- >>> import System.IO.Temp

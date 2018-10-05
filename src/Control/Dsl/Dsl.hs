@@ -10,13 +10,28 @@ import Control.Dsl.PolyCont
 import Control.Dsl.Cont
 import Prelude hiding ((>>), (>>=), return, fail)
 
-{- | An use case of a keyword in a @do@ block.
+{- | An use case of a statement in a @do@ block.
 
-A keyword is a delimited continuation,
-which can be either ad-hoc polymorphic or not.
+== Allowed statements in DSL @do@ blocks
 
-Don't create custom instances of 'Dsl' for keywords.
-Instead, create 'PolyCont' for both your custom keywords and built-in keywords. 
+A statement in a DSL @do@ block is a delimited continuation,
+which can be a GADT keyword, a control flow operator,
+or the final result:
+
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+|                   |                                                                                              Keywords                                                                                              |          Control flow operators         |                   Results                   |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+|      Examples     | 'Control.Dsl.Shift.Shift','Control.Dsl.Yield.Yield','Control.Dsl.State.Get.Get','Control.Dsl.State.Put.Put', 'Control.Dsl.Monadic.Monadic', 'Control.Dsl.Return.Return', 'Control.Dsl.Empty.Empty' | 'ifThenElse', 'when', 'unless', 'guard' | 'return', 'fail', 'Control.Dsl.Empty.empty' |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+|    Defined as a   |                                                                                                GADT                                                                                                |                 function                |                   function                  |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+|   Interpreted by  |                                                                                   'Control.Dsl.PolyCont.PolyCont'                                                                                  |         'Control.Dsl.Cont.Cont'         |       'Control.Dsl.PolyCont.PolyCont'       |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------+---------------------------------------------+
+| Can be present as |                                                                                                    not the last statement of a @do@ block                                                                                                    |      the last statement of a @do@ block     |
++-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------+
+
+Don't create custom instances of 'Dsl' for statement.
+Instead, create 'PolyCont' instances for your custom GADT keywords.
 
 ==== __Examples__
 
