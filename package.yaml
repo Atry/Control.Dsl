@@ -8,7 +8,6 @@ author: Yang Bo
 maintainer: pop.atry@gmail.com
 copyright: 2018 Yang Bo
 extra-source-files:
-  - README.md
   - ChangeLog.md
 description: |
   This \"control-dsl\" package is a toolkit to create extensible Domain Specific Languages in @do@-notation.
