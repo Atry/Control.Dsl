@@ -190,3 +190,6 @@ import qualified Control.Dsl.Cont -- For resolving haddock links
 -- >>> import Data.Void
 -- >>> import System.IO
 -- >>> import System.IO.Temp
+
+ifThenElse True k _ = k
+ifThenElse False _ k = k
