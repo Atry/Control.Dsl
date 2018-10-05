@@ -1,5 +1,8 @@
 # Changelog for `Control.Dsl`
 
+## 0.2.0.1
+* Improved documentation.
+
 ## 0.2.0.0
 
 * Renamed package `do-notation-dsl` to `control-dsl`.
