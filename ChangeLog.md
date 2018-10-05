@@ -1,3 +1,6 @@
+## 0.2.1.1
+* Fix dead links in documentation.
+
 ## 0.2.1.0
 * Add `toCont` function
 
