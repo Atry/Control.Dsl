@@ -41,11 +41,11 @@ when :: Bool -> Cont r () -> Cont r ()
 when True k = k
 when False _ = Cont ($ ())
 
-unless True _ = Cont $ \f -> f ()
-unless False (Cont k) = Cont k
+unless True _ = Cont ($ ())
+unless False k = k
 
-guard True = Cont $ \f -> f ()
-guard False = Cont $ \f -> empty
+guard True = Cont ($ ())
+guard False = Cont (const empty)
 
 instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (Cont r a') a where
   runPolyCont k f = Cont $ \g -> runPolyCont k $ \a -> runCont (f a) g
