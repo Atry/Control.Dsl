@@ -72,6 +72,11 @@ or additional unused parameters.
 -}
 type State = (->)
 
+{- | The 'PolyCont' derivation rule for any keywords in a 'State' @do@ block.
+
+This derivated instance provide the ability similar
+to @StateT@ or @ReaterT@ monad transformers.
+-}
 instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (State s r) a where
   runPolyCont k f s = runPolyCont k $ \a -> f a s
 

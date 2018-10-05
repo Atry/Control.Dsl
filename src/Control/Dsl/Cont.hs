@@ -50,6 +50,11 @@ unless False k = k
 guard True = Cont ($ ())
 guard False = Cont (const empty)
 
+{- | The 'PolyCont' derivation rule for any keywords in a 'Cont' @do@ block.
+
+This derivated instance provide the ability similar
+to @ContT@ monad transformers.
+-}
 instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (Cont r a') a where
   runPolyCont k f = Cont $ \g -> runPolyCont k $ \a -> runCont (f a) g
 
