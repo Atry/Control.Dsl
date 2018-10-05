@@ -100,13 +100,16 @@ f <=< g = f >=> g
 -- | The implementation of statements with no value in a @do@ block.
 k >> a = cpsApply k $ const a
 
--- | Keywords based on ad-hoc polymorphic delimited continuations.
+-- | Statements based on ad-hoc polymorphic delimited continuations.
 instance {-# OVERLAPS #-} PolyCont k r a => Dsl k r a where
   cpsApply = runPolyCont
 
--- | Keywords based on monomorphic delimited continuations.
+-- | Statements based on monomorphic delimited continuations.
 instance Dsl Cont r a where
   cpsApply = runCont
 
 forever :: Dsl k r a => k r a -> r
 forever k = k >> forever k
+
+ifThenElse True k _ = k
+ifThenElse False _ k = k

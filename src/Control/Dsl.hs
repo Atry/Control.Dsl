@@ -165,7 +165,7 @@ module Control.Dsl(
 
 import Control.Dsl.Dsl hiding (cpsApply)
 import Control.Dsl.Return (return, fail)
-import Control.Dsl.Cont (ifThenElse, when, unless, guard)
+import Control.Dsl.Cont (when, unless, guard)
 
 import Control.Dsl.State -- For orphan instances
 
@@ -190,6 +190,3 @@ import qualified Control.Dsl.Cont -- For resolving haddock links
 -- >>> import Data.Void
 -- >>> import System.IO
 -- >>> import System.IO.Temp
-
-ifThenElse True k _ = k
-ifThenElse False _ k = k
