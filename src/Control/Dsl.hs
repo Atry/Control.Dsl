@@ -104,7 +104,7 @@ instance PolyCont GetLine PureInterpreter String where
 ...
 
 The 'Control.Dsl.PolyCont.PolyCont' instance for @GetLine@ is implemented as a
-'Control.Dsl.Cont' that contains a DSL @do@ block of atomic statements.
+'Control.Dsl.Cont.Cont' that contains a DSL @do@ block of atomic statements.
 
 === Running the DSL purely
 
