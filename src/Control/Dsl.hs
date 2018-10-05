@@ -135,6 +135,12 @@ instance PolyCont GetLine EffectfulInterpreter String where
     return line
 :}
 
+'Contro.Dsl.Monadic.Monadic' is a built-in keyword to perform old-fashioned
+monadic action in a DSL @do@ block.
+
+Other keywords can be used together with 'Contro.Dsl.Monadic.Monadic'.
+No monad transformer is required.
+
 >>> :{
 instance PolyCont MaxLengthConfig (IO ()) Int where
   runPolyCont MaxLengthConfig f = f 80
