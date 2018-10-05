@@ -3,7 +3,7 @@ version: 0.2.1.2
 github: Atry/Control.Dsl
 license: BSD3
 category: Control, DSL, Effect, General, Language, Mutable State, IO, Polymorphism
-synopsis: An alternative to monads
+synopsis: An alternative to monads for control flow DSLs
 author: Yang Bo
 maintainer: pop.atry@gmail.com
 copyright: 2018 Yang Bo
