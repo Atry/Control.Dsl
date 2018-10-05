@@ -37,6 +37,7 @@ type (!!) = Cont
 -- ! A delimited continuation that can be used in a @do@ block.
 newtype Cont r a = Cont { runCont :: (a -> r) -> r }
 
+-- ! Convert a 'PolyCont' to a 'Cont'
 toCont k = Cont (runPolyCont k)
 
 when :: Bool -> Cont r () -> Cont r ()
