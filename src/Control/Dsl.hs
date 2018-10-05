@@ -58,7 +58,7 @@ from keywords and some built-in control flow functions.
 
 Keywords and the result statement 'return' and 'fail'
 are ad-hoc polymorphic delimited continuations,
-interpreted by 'Contro.Dsl.PolyCont.PolyCont',
+interpreted by 'Control.Dsl.PolyCont.PolyCont',
 which can be automatically inferred:
 
 >>> :type dslBlock
@@ -70,8 +70,8 @@ dslBlock
 
 === Creating a pure interpreter
 
-The type @r@ varies from different 'Contro.Dsl.PolyCont.PolyCont' instances.
-By defining 'Contro.Dsl.PolyCont.PolyCont' instances for @PureInterpreter@,
+The type @r@ varies from different 'Control.Dsl.PolyCont.PolyCont' instances.
+By defining 'Control.Dsl.PolyCont.PolyCont' instances for @PureInterpreter@,
 you can make @r@ be a @PureInterpreter@:
 
 >>> type PureInterpreter = Int -> [String] -> Cont [String] IOError
@@ -91,7 +91,7 @@ instance PolyCont (Return ()) PureInterpreter Void where
   runPolyCont (Return ()) = runPolyCont Empty
 :}
 
-The above three 'Contro.Dsl.PolyCont.PolyCont' instances are implemented as
+The above three 'Control.Dsl.PolyCont.PolyCont' instances are implemented as
 forwarders to other existing keywords.
 
 >>> :{
@@ -103,8 +103,8 @@ instance PolyCont GetLine PureInterpreter String where
 :}
 ...
 
-The 'Contro.Dsl.PolyCont.PolyCont' instance for @GetLine@ is implemented as a
-'Contro.Dsl.Cont' that contains a DSL @do@ block of atomic statements.
+The 'Control.Dsl.PolyCont.PolyCont' instance for @GetLine@ is implemented as a
+'Control.Dsl.Cont' that contains a DSL @do@ block of atomic statements.
 
 === Running the DSL purely
 
@@ -124,7 +124,7 @@ The 'Contro.Dsl.PolyCont.PolyCont' instance for @GetLine@ is implemented as a
 === Creating an effectful interpreter
 
 Alternatively, @dslBlock@ can run effectfully by providing effectful
-'Contro.Dsl.PolyCont.PolyCont' instances.
+'Control.Dsl.PolyCont.PolyCont' instances.
 
 >>> type EffectfulInterpreter = Handle -> IO ()
 
@@ -136,10 +136,10 @@ instance PolyCont GetLine EffectfulInterpreter String where
     return line
 :}
 
-'Contro.Dsl.Monadic.Monadic' is a built-in keyword to perform old-fashioned
+'Control.Dsl.Monadic.Monadic' is a built-in keyword to perform old-fashioned
 monadic action in a DSL @do@ block.
 
-Other keywords can be used together with 'Contro.Dsl.Monadic.Monadic'.
+Other keywords can be used together with 'Control.Dsl.Monadic.Monadic'.
 No monad transformer is required.
 
 >>> :{
