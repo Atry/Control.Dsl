@@ -8,7 +8,7 @@ to create extensible Domain Specific Languages in @do@-notation.
 
 A DSL @do@ block contains heterogeneous statements from different vendors.
 A statement can be defined as a GADT,
-interpreted by a 'Dsl' type class instance, either effectful or purely.
+interpreted by a 'Dsl' type class instance, either effectfully or purely.
 
 A DSL @do@ block is abstract.
 When creating the block, the type class requirements is automatically inferred.
@@ -70,7 +70,7 @@ dslBlock
 
 === Creating a pure interpreter
 
-The type of @r@ varies from different 'Contro.Dsl.PolyCont.PolyCont' instances.
+The type @r@ varies from different 'Contro.Dsl.PolyCont.PolyCont' instances.
 By defining 'Contro.Dsl.PolyCont.PolyCont' instances for @PureInterpreter@,
 you can make @r@ be a @PureInterpreter@:
 
