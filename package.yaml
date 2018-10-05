@@ -10,7 +10,10 @@ copyright: 2018 Yang Bo
 extra-source-files:
   - README.md
   - ChangeLog.md
-description: 'Please see the README on GitHub at <https://github.com/Atry/control-dsl#readme>'
+description: |
+  This \"control-dsl\" package is a toolkit to create extensible Domain Specific Languages in @do@-notation.
+
+  See "Control.Dsl" for more information.
 dependencies:
   - base >= 4.8 && < 5
 library:
@@ -32,9 +35,9 @@ tests:
     main: doctest-driver.hs
     source-dirs: test
     ghc-options:
-      - '-threaded'
-      - '-rtsopts'
-      - '-with-rtsopts=-N'
+      - "-threaded"
+      - "-rtsopts"
+      - "-with-rtsopts=-N"
     dependencies:
       - control-dsl
       - containers

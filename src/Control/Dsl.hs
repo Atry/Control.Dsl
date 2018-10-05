@@ -37,12 +37,12 @@ Each keyword is a GADT:
 >>> data GetLine r a where GetLine :: GetLine r String
 >>> data PutStrLn r a where PutStrLn :: String -> PutStrLn r ()
 
-== DSL script
+== DSL @do@ block
 
 Then those keywords can be used in @do@ blocks:
 
 >>> :{
-dslScript = do
+dslBlock = do
   maxLength <- MaxLengthConfig
   line1 <- GetLine
   line2 <- GetLine
@@ -53,7 +53,7 @@ dslScript = do
   return ()
 :}
 
-The above @dslScript@ function creates a DSL \"script\"
+The above @dslBlock@ function creates an abstract code block of DSL 
 from keywords and some built-in control flow functions.
 
 Keywords and the result statement 'return' and 'fail'
@@ -61,8 +61,8 @@ are ad-hoc polymorphic delimited continuations,
 interpreted by 'Contro.Dsl.PolyCont.PolyCont',
 which can be automatically inferred:
 
->>> :type dslScript
-dslScript
+>>> :type dslBlock
+dslBlock
   :: (PolyCont (Return IOError) r Void, PolyCont (Return ()) r Void,
       PolyCont MaxLengthConfig r Int, PolyCont GetLine r [Char],
       PolyCont PutStrLn r ()) =>
@@ -105,24 +105,24 @@ instance PolyCont GetLine PureInterpreter String where
 The 'Contro.Dsl.PolyCont.PolyCont' instance for @GetLine@ is implemented as a
 'Contro.Dsl.Cont' that contains a DSL @do@ block of atomic statements.
 
-=== Running the script purely
+=== Running the DSL purely
 
->>> runScriptPurely = dslScript :: PureInterpreter
+>>> runPurely = dslBlock :: PureInterpreter
 
 >>> errorHandler e = ["(handled) " ++ show e]
->>> runCont (runScriptPurely 80 ["LINE_1", "LINE_2"]) errorHandler
+>>> runCont (runPurely 80 ["LINE_1", "LINE_2"]) errorHandler
 ["The input is LINE_1 and LINE_2"]
 
 >>> longInput = [replicate 40 '*', replicate 41 '*']
->>> runCont (runScriptPurely 80 longInput) errorHandler
+>>> runCont (runPurely 80 longInput) errorHandler
 ["The input is too long","(handled) user error (Illegal input)"]
 
->>> runCont (runScriptPurely 80 ["ONE_LINE"]) errorHandler
+>>> runCont (runPurely 80 ["ONE_LINE"]) errorHandler
 ["(handled) user error (Pattern match failure in do expression at <interactive>..."]
 
 === Creating an effectful interpreter
 
-Alternatively, @dslScript@ can run effectfully by providing effectful
+Alternatively, @dslBlock@ can run effectfully by providing effectful
 'Contro.Dsl.PolyCont.PolyCont' instances.
 
 >>> type EffectfulInterpreter = Handle -> IO ()
@@ -150,16 +150,16 @@ instance PolyCont (Return IOError) (IO ()) Void where
   runPolyCont (Return e) _ = hPutStrLn stderr (show e)
 :}
 
-=== Running the script purely
+=== Running the DSL effectfully
 
->>> runScriptEffectfully = dslScript :: EffectfulInterpreter
+>>> runEffectfully = dslBlock :: EffectfulInterpreter
 
 >>> :{
 withSystemTempFile "tmp-input-file" $ \_ -> \h -> do
   Monadic $ hPutStrLn h "LINE_1"
   Monadic $ hPutStrLn h "LINE_2"
   Monadic $ hSeek h AbsoluteSeek 0
-  runScriptEffectfully h
+  runEffectfully h
 :}
 The input is LINE_1 and LINE_2
 -}

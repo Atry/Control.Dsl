@@ -10,7 +10,7 @@ import Control.Dsl.PolyCont
 import Control.Dsl.Cont
 import Prelude hiding ((>>), (>>=), return, fail)
 
-{- | An use case of a statement in a @do@ block.
+{- | Witnesses a use case of a statement in a @do@ block.
 
 == Allowed statements in DSL @do@ blocks
 
@@ -59,7 +59,7 @@ f = do
   return "baz"
 :}
 
-@f@ is a script that contains keywords of
+@f@ is a @do@ block that contains keywords of
 'Control.Dsl.State.Get.Get',
 'Control.Dsl.Yield.Yield',
 and 'Control.Dsl.Return.return'.
@@ -102,7 +102,7 @@ class Dsl k r a where
 
 {- | The implementation of @<-@ statements in a @do@ block,
 which forwards to 'runCont' if @k@ is 'Cont',
-otherwise forwards to 'runPolyCont'.
+otherwise forwards to 'runPolyCont' from 'PolyCont'.
 -}
 (>>=) k = cpsApply k
 
