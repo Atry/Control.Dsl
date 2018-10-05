@@ -40,7 +40,8 @@ append s = do
   toCont $ Put $ buffer |> s
 :}
 
-@append@ creates 'Control.Dsl.Cont.Cont' that can be used in other @do@ blocks.
+@append@ returns a 'Control.Dsl.Cont.Cont',
+which can be used in other @do@ blocks.
 
 A @formatter@ @append@s 'String' to its internal buffer,
 and 'Control.Dsl.return' the concatenated buffer.
