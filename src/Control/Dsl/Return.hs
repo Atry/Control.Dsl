@@ -25,7 +25,7 @@ This 'return' function aims to be used as the last statement of a @do@ block.
 
 When 'return' is present in a nested @do@ block for
 'Control.Dsl.Cont.when' or 'Control.Dsl.Cont.unless',
-if the @r@ is not @()@,
+if the @r'@ is not @()@,
 it will create a 'Control.Dsl.Cont.Cont' that performs early return,
 skipping the rest statements of the outer @do@ notation.
 
