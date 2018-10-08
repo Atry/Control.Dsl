@@ -3,7 +3,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE GADTs #-}
-{-# LANGUAGE RankNTypes #-}
 
 module Control.Dsl.State.State where
 
@@ -85,6 +84,6 @@ instance {-# OVERLAPS #-} PolyCont k r Void => PolyCont k (State s r) Void where
 
 instance {-# OVERLAPS #-} PolyCont Empty r Void => PolyCont Empty (State s r) Void where
   runPolyCont k _ _ = empty
-      
+
 instance PolyCont (Return r) (State s r) Void where
   runPolyCont (Return r) _ _ = r
