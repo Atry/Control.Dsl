@@ -23,14 +23,30 @@ import Prelude hiding ((>>), (>>=), return, fail)
 >>> import Control.Dsl
 >>> import Control.Dsl.Yield
 >>> import Control.Dsl.Empty
+>>> import Control.Dsl.Monadic
+
 >>> :{
 f :: IO () !! [Integer] !! [String] !! [Double]
 f = do
   Yield "foo"
   Yield 0.5
+  Yield "bar"
   Yield 42
-  empty
+  Yield "baz"
+  return ([] :: [Double])
 :}
+
+>>> :{
+f >>= (\d -> do { Monadic $ putStrLn $ "double list: " ++ show d
+                ; return ([] :: [String]) })
+  >>= (\s -> do { Monadic $ putStrLn $ "string list: " ++ show s
+                ; return ([] :: [Integer]) })
+  >>= (\i -> do { Monadic $ putStrLn $ "integer list: " ++ show i
+                ; return () })
+:}
+double list: [0.5]
+string list: ["foo","bar","baz"]
+integer list: [42]
 -}
 type (!!) = Cont
 
