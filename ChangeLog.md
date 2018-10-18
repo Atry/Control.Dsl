@@ -1,3 +1,6 @@
+## 0.2.1.3
+* Fix the parameter order of `<=<`.
+
 ## 0.2.1.2
 * Improve documentation.
 

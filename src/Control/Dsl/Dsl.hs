@@ -114,7 +114,7 @@ f =<< k = k >>= f
 
 (f >=> g) k = f k >>= g
 
-f <=< g = f >=> g
+f <=< g = g >=> f
 
 -- | The implementation of statements with no value in a @do@ block.
 k >> a = cpsApply k $ const a
