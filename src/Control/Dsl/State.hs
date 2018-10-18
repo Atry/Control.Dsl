@@ -6,7 +6,7 @@
 {- |
 Description : Mutable variables
 
-This module provides keywords to 'Put' and 'Get' the value of multiple mutable variables in a @do@ block.
+This module provides keywords to 'Put' and 'Get' the value on multiple mutable variables in a @do@ block.
 -}
 module Control.Dsl.State (
   module Control.Dsl.State.Put,

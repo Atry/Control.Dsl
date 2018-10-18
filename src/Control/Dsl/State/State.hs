@@ -30,8 +30,8 @@ The type that holds states, which is defined as a plain function.
 >>> import Data.Foldable
 
 The following @append@ function 'Control.Dsl.State.Get's a @Seq String@ state,
-appends @s@ to the 'Data.Sequence.Seq',
-and 'Control.Dsl.State.Put's the new 'Data.Sequence.Seq' as the updated state.
+appends @s@ to the @Seq@,
+and 'Control.Dsl.State.Put's the new @Seq@ as the updated state.
 
 >>> :{
 append s = do
