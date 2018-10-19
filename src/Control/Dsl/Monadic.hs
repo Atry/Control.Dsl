@@ -10,5 +10,5 @@ import qualified Prelude
 -- | This @Monadic@ keyword extracts the monadic value of a monadic expression.
 newtype Monadic m r a = Monadic (m a)
 
-instance Prelude.Monad m => PolyCont (Monadic m) (m b) a where
+instance Prelude.Monad m => StatefulPolyCont (Monadic m) (m b) (m b) a where
   runPolyCont (Monadic k) = (Prelude.>>=) k

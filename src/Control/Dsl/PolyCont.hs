@@ -2,6 +2,8 @@
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE FunctionalDependencies #-}
+{-# LANGUAGE ConstraintKinds #-}
 
 module Control.Dsl.PolyCont where
 
@@ -12,6 +14,9 @@ import Prelude hiding ((>>), (>>=), return, fail)
 Note that a 'PolyCont' is not a __polymorphic delimited continuation__,
 since a 'PolyCont' does not support answer type modification.
 -}
-class PolyCont k r a where
+type PolyCont k r a = StatefulPolyCont k r r a
+
+class StatefulPolyCont k i o a | k i a -> o where
   -- | Run as a CPS function .
-  runPolyCont :: k r' a -> (a -> r) -> r
+  runPolyCont :: k i' a -> (a -> i) -> o
+

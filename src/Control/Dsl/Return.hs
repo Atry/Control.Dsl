@@ -3,6 +3,9 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 {-# LANGUAGE GADTs #-}
 
@@ -16,7 +19,7 @@ import Data.Void
 data Return r' r a where
   Return :: r' -> Return r' r Void
 
-instance PolyCont (Return r) r Void where
+instance StatefulPolyCont (Return r) r r Void where
   runPolyCont (Return r) _ = r
 
 {- | Lift @r@ to the answer type, similar to 'Prelude.return'.
@@ -64,7 +67,8 @@ earlyGeneratorTest = do
 >>> earlyGeneratorTest
 ["before earlyGenerator","inside earlyGenerator","early return","after earlyGenerator","the return value of earlyGenerator is 1"]
 -}
-return r = runPolyCont (Return r) absurd
+return :: forall r' r. PolyCont (Return r') r Void => r' -> r
+return r = runPolyCont (Return r) (absurd @r)
 
 {- | Lift an 'IOError' to the answer type, similar to 'Prelude.fail'.
 
@@ -72,5 +76,5 @@ This 'fail' function aims to be used as the last statement of a @do@ block.
 -}
 fail r = return (userError r)
 
-instance {-# OVERLAPS #-} Applicative m => PolyCont (Return r) (m r) Void where
+instance {-# OVERLAPS #-} Applicative m => StatefulPolyCont (Return r) (m r) (m r) Void where
   runPolyCont (Return r) _ = pure r

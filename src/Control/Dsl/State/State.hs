@@ -3,6 +3,8 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Control.Dsl.State.State where
 
@@ -76,14 +78,14 @@ type State = (->)
 This derivated instance provide the ability similar
 to @StateT@ or @ReaterT@ monad transformers.
 -}
-instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (State s r) a where
+instance {-# OVERLAPS #-} PolyCont k r a => StatefulPolyCont k (State s r) (State s r) a where
   runPolyCont k f s = runPolyCont k (\a -> f a s)
 
-instance {-# OVERLAPS #-} PolyCont k r Void => PolyCont k (State s r) Void where
-  runPolyCont k _ _ = runPolyCont k absurd
+instance {-# OVERLAPS #-} PolyCont k r Void => StatefulPolyCont k (State s r) (State s r) Void where
+  runPolyCont k _ _ = runPolyCont k (absurd @r)
 
-instance {-# OVERLAPS #-} PolyCont Empty r Void => PolyCont Empty (State s r) Void where
+instance {-# OVERLAPS #-} PolyCont Empty r Void => StatefulPolyCont Empty (State s r) (State s r) Void where
   runPolyCont k _ _ = empty
 
-instance PolyCont (Return r) (State s r) Void where
+instance StatefulPolyCont (Return r) (State s r) (State s r) Void where
   runPolyCont (Return r) _ _ = r

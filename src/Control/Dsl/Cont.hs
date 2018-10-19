@@ -71,11 +71,11 @@ guard False = Cont (const empty)
 This derivated instance provide the ability similar
 to @ContT@ monad transformers.
 -}
-instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (Cont r a') a where
+instance {-# OVERLAPS #-} PolyCont k r a => StatefulPolyCont k (Cont r a') (Cont r a') a where
   runPolyCont k f = Cont $ \g -> runPolyCont k $ \a -> runCont (f a) g
 
-instance PolyCont (Return r) (Cont r' r) Void where
+instance StatefulPolyCont (Return r) (Cont r' r) (Cont r' r) Void where
   runPolyCont (Return r) _ = Cont ($ r)
 
-instance PolyCont Empty r Void => PolyCont Empty (Cont r a) Void where
+instance PolyCont Empty r Void => StatefulPolyCont Empty (Cont r a) (Cont r a) Void where
   runPolyCont k _ = Cont (const empty)

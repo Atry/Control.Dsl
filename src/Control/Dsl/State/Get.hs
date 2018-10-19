@@ -13,5 +13,5 @@ import Control.Dsl.State.State
 data Get r a where
   Get :: forall s r. Get r s
 
-instance PolyCont Get (State s r) s where
+instance StatefulPolyCont Get (State s r) (State s r) s where
   runPolyCont Get f s = f s s

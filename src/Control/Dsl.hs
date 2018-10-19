@@ -63,10 +63,12 @@ which can be automatically inferred:
 
 >>> :type dslBlock
 dslBlock
-  :: (PolyCont (Return IOError) r Void, PolyCont (Return ()) r Void,
-      PolyCont MaxLengthConfig r Int, PolyCont GetLine r [Char],
-      PolyCont PutStrLn r ()) =>
-     r
+  :: (StatefulPolyCont (Return IOError) o o Void,
+      StatefulPolyCont (Return ()) o o Void,
+      StatefulPolyCont MaxLengthConfig o o Int,
+      StatefulPolyCont GetLine o o [Char],
+      StatefulPolyCont PutStrLn o o ()) =>
+     o
 
 === Creating a pure interpreter
 
@@ -77,17 +79,17 @@ you can make @r@ be a pure interpreter:
 >>> type PureInterpreter = Int -> [String] -> Cont [String] IOError
 
 >>> :{
-instance PolyCont MaxLengthConfig PureInterpreter Int where
+instance StatefulPolyCont MaxLengthConfig PureInterpreter PureInterpreter Int where
   runPolyCont MaxLengthConfig = runPolyCont Get
 :}
 
 >>> :{
-instance PolyCont PutStrLn PureInterpreter () where
+instance StatefulPolyCont PutStrLn PureInterpreter PureInterpreter () where
   runPolyCont (PutStrLn s) = runPolyCont (Yield s)
 :}
 
 >>> :{
-instance PolyCont (Return ()) PureInterpreter Void where
+instance StatefulPolyCont (Return ()) PureInterpreter PureInterpreter Void where
   runPolyCont (Return ()) = runPolyCont Empty
 :}
 
@@ -95,7 +97,7 @@ The above three 'Control.Dsl.PolyCont.PolyCont' instances are implemented as
 forwarders to other existing keywords.
 
 >>> :{
-instance PolyCont GetLine PureInterpreter String where
+instance StatefulPolyCont GetLine PureInterpreter PureInterpreter String where
   runPolyCont k = runCont $ do
     x : xs <- Get @[String]
     Put xs
@@ -129,7 +131,7 @@ Alternatively, @dslBlock@ can run effectfully by providing effectful
 >>> type EffectfulInterpreter = Handle -> IO ()
 
 >>> :{
-instance PolyCont GetLine EffectfulInterpreter String where
+instance StatefulPolyCont GetLine EffectfulInterpreter EffectfulInterpreter String where
   runPolyCont GetLine = runCont $ do
     h <- Get
     line <- Monadic (hGetLine h)
@@ -143,17 +145,17 @@ Other keywords can be used together with 'Control.Dsl.Monadic.Monadic'.
 No monad transformer is required.
 
 >>> :{
-instance PolyCont MaxLengthConfig (IO ()) Int where
+instance StatefulPolyCont MaxLengthConfig (IO ()) (IO ()) Int where
   runPolyCont MaxLengthConfig f = f 80
 :}
 
 >>> :{
-instance PolyCont PutStrLn (IO ()) () where
+instance StatefulPolyCont PutStrLn (IO ()) (IO ()) () where
   runPolyCont (PutStrLn s) = (Prelude.>>=) (putStrLn s)
 :}
 
 >>> :{
-instance PolyCont (Return IOError) (IO ()) Void where
+instance StatefulPolyCont (Return IOError) (IO ()) (IO ()) Void where
   runPolyCont (Return e) _ = hPutStrLn stderr (show e)
 :}
 
@@ -219,3 +221,4 @@ import qualified Control.Dsl.State.Put -- For resolving haddock links
 -- >>> import Data.Void
 -- >>> import System.IO
 -- >>> import System.IO.Temp
+-- >>> :set -XAllowAmbiguousTypes

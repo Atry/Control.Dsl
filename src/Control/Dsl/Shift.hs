@@ -15,5 +15,5 @@ import Prelude hiding ((>>), (>>=), return, fail)
 -- | A keyword to extract the value of a CPS function .
 newtype Shift r' r a = Shift ((a -> r') -> r')
 
-instance PolyCont (Shift r) r a where
+instance StatefulPolyCont (Shift r) r r a where
   runPolyCont (Shift k) = k

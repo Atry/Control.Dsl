@@ -29,6 +29,8 @@ library:
     - UndecidableInstances
     - RankNTypes
     - GADTs
+    - FunctionalDependencies
+    - ScopedTypeVariables
 tests:
   doctests:
     main: doctest-driver.hs

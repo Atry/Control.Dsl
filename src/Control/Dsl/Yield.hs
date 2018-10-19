@@ -48,8 +48,8 @@ randomGenerator seed =
 data Yield x r a where
   Yield :: x -> Yield x r ()
 
-instance PolyCont (Yield x) [x] () where
+instance StatefulPolyCont (Yield x) [x] [x] () where
   runPolyCont (Yield x) f = x : f ()
 
-instance PolyCont (Yield x) (Cont r [x]) () where
+instance StatefulPolyCont (Yield x) (Cont r [x]) (Cont r [x]) () where
   runPolyCont (Yield x) f = Cont $ \g -> runCont (f ()) $ \xs -> g (x : xs)

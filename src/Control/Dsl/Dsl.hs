@@ -3,6 +3,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE FunctionalDependencies #-}
 
 module Control.Dsl.Dsl where
 
@@ -80,19 +82,20 @@ In fact, @f@ can be any type
 as long as 'PolyCont' instances for involved keywords are provided.
 
 >>> :type f
-f :: (PolyCont (Yield [Char]) r (),
-      PolyCont (Return [Char]) r Void, PolyCont Get r Bool) =>
-     r
+f :: (StatefulPolyCont (Yield [Char]) o o (),
+      StatefulPolyCont (Return [Char]) o o Void,
+      StatefulPolyCont Get o o Bool) =>
+     o
 
 For example, @f@ can be interpreted as an impure @IO ()@,
 providing the following instances:
 
 >>> :{
-instance PolyCont (Yield String) (IO ()) () where
+instance StatefulPolyCont (Yield String) (IO ()) (IO ()) () where
   runPolyCont (Yield a) = (Prelude.>>=) (putStrLn $ "Yield " ++ a)
-instance PolyCont Get (IO ()) Bool where
+instance StatefulPolyCont Get (IO ()) (IO ()) Bool where
   runPolyCont Get f = putStrLn "Get" Prelude.>> f False
-instance PolyCont (Return String) (IO ()) Void where
+instance StatefulPolyCont (Return String) (IO ()) (IO ()) Void where
   runPolyCont (Return r) _ = putStrLn $ "Return " ++ r
 :}
 
@@ -101,8 +104,10 @@ Yield foo
 Get
 Return baz
 -}
-class Dsl k r a where
-  cpsApply :: k r a -> (a -> r) -> r
+type Dsl k r a = StatefulDsl k r r a
+
+class StatefulDsl k i o a | k i a -> o where
+  cpsApply :: k i a -> (a -> i) -> o
 
 {- | The implementation of @<-@ statements in a @do@ block,
 which forwards to 'runCont' if @k@ is 'Cont',
@@ -119,16 +124,16 @@ f <=< g = g >=> f
 -- | The implementation of statements with no value in a @do@ block.
 k >> a = cpsApply k $ const a
 
--- | Statements based on ad-hoc polymorphic delimited continuations.
-instance {-# OVERLAPS #-} PolyCont k r a => Dsl k r a where
-  cpsApply = runPolyCont
-
--- | Statements based on monomorphic delimited continuations.
-instance Dsl Cont r a where
-  cpsApply = runCont
-
-forever :: Dsl k r a => k r a -> r
 forever k = k >> forever k
 
 ifThenElse True k _ = k
 ifThenElse False _ k = k
+
+
+-- | Statements based on ad-hoc polymorphic delimited continuations.
+instance {-# OVERLAPS #-} StatefulPolyCont k r r a => StatefulDsl k r r a where
+  cpsApply = runPolyCont
+
+-- | Statements based on monomorphic delimited continuations.
+instance StatefulDsl Cont r r a where
+  cpsApply = runCont
