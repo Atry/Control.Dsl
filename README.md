@@ -1,4 +1,4 @@
-# Control.Dsl: An alternative to monads for control flow DSLs
+# Control.Dsl: An alternative to monads in `do`-notation
 
 [![Hackage](https://img.shields.io/hackage/v/control-dsl.svg)](https://hackage.haskell.org/package/control-dsl)
 [![Build Status](https://travis-ci.org/Atry/Control.Dsl.svg)](https://travis-ci.org/Atry/Control.Dsl)
