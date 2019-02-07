@@ -117,7 +117,7 @@ f =<< k = k >>= f
 f <=< g = g >=> f
 
 -- | The implementation of statements with no value in a @do@ block.
-k >> a = cpsApply k $ const a
+k >> a = k >>= const a
 
 -- | Statements based on ad-hoc polymorphic delimited continuations.
 instance {-# OVERLAPS #-} PolyCont k r a => Dsl k r a where
