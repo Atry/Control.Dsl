@@ -108,7 +108,8 @@ class Dsl k r a where
 which forwards to 'runCont' if @k@ is 'Cont',
 otherwise forwards to 'runPolyCont' from 'PolyCont'.
 -}
-(>>=) k = cpsApply k
+(>>=) :: Dsl k r a => k r a -> (a -> r) -> r
+(>>=) = cpsApply
 
 f =<< k = k >>= f
 
