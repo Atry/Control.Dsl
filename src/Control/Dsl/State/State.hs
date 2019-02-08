@@ -77,7 +77,7 @@ This derivated instance provide the ability similar
 to @StateT@ or @ReaterT@ monad transformers.
 -}
 instance {-# OVERLAPS #-} PolyCont k r a => PolyCont k (State s r) a where
-  runPolyCont k f s = runPolyCont k (\a -> f a s)
+  runPolyCont k f s = runPolyCont k (`f` s)
 
 instance {-# OVERLAPS #-} PolyCont k r Void => PolyCont k (State s r) Void where
   runPolyCont k _ _ = runPolyCont k absurd
