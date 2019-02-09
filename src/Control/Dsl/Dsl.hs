@@ -6,9 +6,13 @@
 
 module Control.Dsl.Dsl where
 
-import Control.Dsl.PolyCont
-import Control.Dsl.Cont
-import Prelude hiding ((>>), (>>=), return, fail)
+import           Control.Dsl.PolyCont
+import           Control.Dsl.Cont
+import           Prelude                 hiding ( (>>)
+                                                , (>>=)
+                                                , return
+                                                , fail
+                                                )
 
 {- | Witnesses a use case of a statement in a @do@ block.
 
@@ -113,7 +117,7 @@ otherwise forwards to 'runPolyCont' from 'PolyCont'.
 
 f =<< k = k >>= f
 
-(f >=> g) k = f k >>= g
+(>=>) f g k = f k >>= g
 
 f <=< g = g >=> f
 
@@ -131,5 +135,5 @@ instance Dsl Cont r a where
 forever :: Dsl k r a => k r a -> r
 forever k = k >> forever k
 
-ifThenElse True k _ = k
+ifThenElse True  k _ = k
 ifThenElse False _ k = k

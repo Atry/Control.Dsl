@@ -7,11 +7,15 @@
 
 module Control.Dsl.Cont where
 
-import Control.Dsl.Return
-import Control.Dsl.Empty
-import Control.Dsl.PolyCont
-import Data.Void
-import Prelude hiding ((>>), (>>=), return, fail)
+import           Control.Dsl.Return
+import           Control.Dsl.Empty
+import           Control.Dsl.PolyCont
+import           Data.Void
+import           Prelude                 hiding ( (>>)
+                                                , (>>=)
+                                                , return
+                                                , fail
+                                                )
 
 {- | A type alias to 'Cont' for a deeply nested delimited continuation.
 
@@ -57,13 +61,13 @@ newtype Cont r a = Cont { runCont :: (a -> r) -> r }
 toCont k = Cont (runPolyCont k)
 
 when :: Bool -> Cont r () -> Cont r ()
-when True k = k
+when True  k = k
 when False _ = Cont ($ ())
 
-unless True _ = Cont ($ ())
+unless True  _ = Cont ($ ())
 unless False k = k
 
-guard True = Cont ($ ())
+guard True  = Cont ($ ())
 guard False = Cont (const empty)
 
 {- | The 'PolyCont' derivation rule for any keywords in a 'Cont' @do@ block.

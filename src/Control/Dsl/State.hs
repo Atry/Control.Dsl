@@ -8,12 +8,13 @@ Description : Mutable variables
 
 This module provides keywords to 'Put' and 'Get' the value on multiple mutable variables in a @do@ block.
 -}
-module Control.Dsl.State (
-  module Control.Dsl.State.Put,
-  module Control.Dsl.State.Get,
-  module Control.Dsl.State.State,
-) where
+module Control.Dsl.State
+  ( module Control.Dsl.State.Put
+  , module Control.Dsl.State.Get
+  , module Control.Dsl.State.State
+  )
+where
 
-import Control.Dsl.State.Put
-import Control.Dsl.State.Get
-import Control.Dsl.State.State
+import           Control.Dsl.State.Put
+import           Control.Dsl.State.Get
+import           Control.Dsl.State.State

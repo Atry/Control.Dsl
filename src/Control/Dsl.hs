@@ -180,17 +180,23 @@ withSystemTempFile "tmp-input-file" $ \_ -> \h -> do
 :}
 The input is LINE_1 and LINE_2
 -}
-module Control.Dsl(
-  module Control.Dsl.Dsl,
-  module Control.Dsl.Return,
-  module Control.Dsl.Cont
-) where
+module Control.Dsl
+  ( module Control.Dsl.Dsl
+  , module Control.Dsl.Return
+  , module Control.Dsl.Cont
+  )
+where
 
-import Control.Dsl.Dsl hiding (cpsApply)
-import Control.Dsl.Return (return, fail)
-import Control.Dsl.Cont (when, unless, guard)
+import           Control.Dsl.Dsl         hiding ( cpsApply )
+import           Control.Dsl.Return             ( return
+                                                , fail
+                                                )
+import           Control.Dsl.Cont               ( when
+                                                , unless
+                                                , guard
+                                                )
 
-import Control.Dsl.State.State -- For orphan instances
+import           Control.Dsl.State.State -- For orphan instances
 
 import qualified Control.Monad -- For resolving haddock links
 import qualified Control.Dsl.PolyCont -- For resolving haddock links

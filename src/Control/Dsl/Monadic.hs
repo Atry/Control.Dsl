@@ -4,7 +4,7 @@
 
 module Control.Dsl.Monadic where
 
-import Control.Dsl.PolyCont
+import           Control.Dsl.PolyCont
 import qualified Prelude
 
 -- | This @Monadic@ keyword extracts the monadic value of a monadic expression.

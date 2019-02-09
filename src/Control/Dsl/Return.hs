@@ -8,10 +8,14 @@
 
 module Control.Dsl.Return where
 
-import Prelude hiding ((>>), (>>=), return, fail)
-import Control.Dsl.PolyCont
-import Control.Exception
-import Data.Void
+import           Prelude                 hiding ( (>>)
+                                                , (>>=)
+                                                , return
+                                                , fail
+                                                )
+import           Control.Dsl.PolyCont
+import           Control.Exception
+import           Data.Void
 
 data Return r' r a where
   Return :: r' -> Return r' r Void

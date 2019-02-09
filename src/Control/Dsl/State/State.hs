@@ -6,11 +6,15 @@
 
 module Control.Dsl.State.State where
 
-import Data.Void
-import Control.Dsl.Empty
-import Control.Dsl.Return
-import Control.Dsl.PolyCont
-import Prelude hiding ((>>), (>>=), return, fail)
+import           Data.Void
+import           Control.Dsl.Empty
+import           Control.Dsl.Return
+import           Control.Dsl.PolyCont
+import           Prelude                 hiding ( (>>)
+                                                , (>>=)
+                                                , return
+                                                , fail
+                                                )
 
 {- |
 The type that holds states, which is defined as a plain function.

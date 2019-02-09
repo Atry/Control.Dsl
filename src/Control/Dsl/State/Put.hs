@@ -5,9 +5,13 @@
 
 module Control.Dsl.State.Put where
 
-import Prelude hiding ((>>), (>>=), return, fail)
-import Control.Dsl.PolyCont
-import Control.Dsl.State.State
+import           Prelude                 hiding ( (>>)
+                                                , (>>=)
+                                                , return
+                                                , fail
+                                                )
+import           Control.Dsl.PolyCont
+import           Control.Dsl.State.State
 
 data Put s r a where
   Put :: s -> Put s r ()

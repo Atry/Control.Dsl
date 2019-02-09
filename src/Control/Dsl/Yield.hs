@@ -14,9 +14,13 @@ similar to the @yield@ keyword in C#, Python, and ECMAScript.
 -}
 module Control.Dsl.Yield where
 
-import Control.Dsl.Cont
-import Control.Dsl.PolyCont
-import Prelude hiding ((>>), (>>=), return, fail)
+import           Control.Dsl.Cont
+import           Control.Dsl.PolyCont
+import           Prelude                 hiding ( (>>)
+                                                , (>>=)
+                                                , return
+                                                , fail
+                                                )
 
 {- | This @Yield@ keyword produces an element in a list generator
 
