@@ -11,13 +11,13 @@ A statement can be defined as a GADT,
 interpreted by a 'Dsl' type class instance, either effectfully or purely.
 
 A DSL @do@ block is abstract.
-When creating the block, the type class requirements is automatically inferred.
+When creating the block, the type class requirements are automatically inferred.
 Therefore, the data structures and implementation of interpreters
 can be switched by providing different instances.
 
 = Getting started
 
-This package provides 'Dsl' type class used in @do@ notation,
+This package provides 'Dsl' type class used in a @do@ notation,
 as a replacement to 'Control.Monad.Monad'.
 
 @RebindableSyntax@ extension is required to enable DSL @do@ notation.
@@ -70,8 +70,8 @@ dslBlock
 
 === Creating a pure interpreter
 
-The type @r@ varies from different 'Control.Dsl.PolyCont.PolyCont' instances.
-By defining 'Control.Dsl.PolyCont.PolyCont' instances for @PureInterpreter@,
+The return type of @dslBlock@ is @r@, which varies from different 'Control.Dsl.PolyCont.PolyCont' instances.
+For example, by defining 'Control.Dsl.PolyCont.PolyCont' instances for @PureInterpreter@,
 you can make @r@ be a pure interpreter:
 
 >>> type PureInterpreter = Int -> [String] -> Cont [String] IOError
