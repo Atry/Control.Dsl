@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: mstksg/setup-stack@v1
+    - uses: mstksg/setup-stack@v2
 
     - name: Cache
       uses: actions/cache@v1
