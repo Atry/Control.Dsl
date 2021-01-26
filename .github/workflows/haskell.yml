@@ -35,6 +35,6 @@ jobs:
           stack install happy
           stack test --dependencies-only --fast
     - name: Build
-      run: stack build --enable-tests --enable-benchmarks all
+      run: stack build
     - name: Run tests
       run: stack test
