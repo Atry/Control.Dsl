@@ -17,6 +17,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: mstksg/setup-stack@v2
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     - name: Cache
       uses: actions/cache@v1
