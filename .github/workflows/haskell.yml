@@ -1,0 +1,40 @@
+name: Haskell CI
+
+on:
+  push:
+    branches:
+    - '*'
+  pull_request:
+    branches:
+    - '*'
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: mstksg/setup-stack@v2
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+    - name: Cache
+      uses: actions/cache@v1
+      env:
+        cache-name: cache-cabal
+      with:
+        path: ~/.stack
+        key: ${{ runner.os }}-stack-work-${{ hashFiles('stack.yaml') }}
+        restore-keys: ${{ runner.os }}-stack-work
+
+    - name: Install dependencies
+      run: |
+          stack update
+          stack install happy
+          stack test --dependencies-only --fast
+    - name: Build
+      run: stack build
+    - name: Run tests
+      run: stack test
