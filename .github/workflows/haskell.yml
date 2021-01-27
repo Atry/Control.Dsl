@@ -35,7 +35,7 @@ jobs:
         cache-name: cache-cabal
       with:
         path: ~/.stack
-        key: ${{ runner.os }}-stack-work-${{ matrix.resolver }}-${{ hashFiles('stack.yaml') }}-{{ hashFiles('package.yaml') }}
+        key: ${{ runner.os }}-stack-work-${{ matrix.resolver }}-${{ hashFiles('stack.yaml') }}-${{ hashFiles('package.yaml') }}
         restore-keys: |
           ${{ runner.os }}-stack-work-${{ matrix.resolver }}-${{ hashFiles('stack.yaml') }}-
           ${{ runner.os }}-stack-work-${{ matrix.resolver }}-
