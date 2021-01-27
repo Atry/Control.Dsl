@@ -36,5 +36,7 @@ jobs:
           stack test --dependencies-only --fast
     - name: Build
       run: stack build
+    - name: Build documentation
+      run: stack haddock
     - name: Run tests
       run: stack test
