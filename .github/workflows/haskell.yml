@@ -30,9 +30,6 @@ jobs:
         restore-keys: ${{ runner.os }}-stack-work
 
     - name: Install dependencies
-      run: |
-          stack update
-          stack install happy
-          stack test --haddock --no-haddock-deps --dependencies-only --fast
+      run: stack test --haddock --no-haddock-deps --dependencies-only --fast
     - name: Build and test
       run: stack test --haddock --no-haddock-deps
