@@ -33,10 +33,6 @@ jobs:
       run: |
           stack update
           stack install happy
-          stack test --dependencies-only --fast
-    - name: Build
-      run: stack build
-    - name: Build documentation
-      run: stack haddock
-    - name: Run tests
-      run: stack test
+          stack test --haddock --no-haddock-deps --dependencies-only --fast
+    - name: Build and test
+      run: stack test --haddock --no-haddock-deps
