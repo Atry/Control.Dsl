@@ -11,7 +11,16 @@ on:
 
 jobs:
   build:
-
+    strategy:
+      matrix:
+        resolver:
+        - lts-12
+        - lts-13
+        - lts-14
+        - lts-15
+        - lts-16
+        - lts-17
+        - nightly
     runs-on: ubuntu-latest
 
     steps:
@@ -26,10 +35,12 @@ jobs:
         cache-name: cache-cabal
       with:
         path: ~/.stack
-        key: ${{ runner.os }}-stack-work-${{ hashFiles('stack.yaml') }}
-        restore-keys: ${{ runner.os }}-stack-work
-
+        key: ${{ runner.os }}-stack-work-${{ matrix.resolver }}-${{ hashFiles('stack.yaml') }}-{{ hashFiles('package.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-stack-work-${{ matrix.resolver }}-${{ hashFiles('stack.yaml') }}-
+          ${{ runner.os }}-stack-work-${{ matrix.resolver }}-
+          ${{ runner.os }}-stack-work-
     - name: Install dependencies
-      run: stack test --haddock --no-haddock-deps --dependencies-only --fast
+      run: stack --resolver ${{ matrix.resolver }} test --haddock --no-haddock-deps --dependencies-only --fast
     - name: Build and test
-      run: stack test --haddock --no-haddock-deps
+      run: stack --resolver ${{ matrix.resolver }} test --haddock --no-haddock-deps
